@@ -1,6 +1,30 @@
-﻿@{
+﻿@using IdentityMail.Web.Entities
+@using IdentityMail.Web.Context
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject AppDbContext _context
+@inject UserManager<AppUser> _userManager
+
+@{
     var currentAction = ViewContext.RouteData
         .Values["action"]?.ToString();
+
+    int unreadCount = 0;
+
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user != null)
+        {
+            unreadCount = await _context.UserMessages
+                .CountAsync(x =>
+                    x.ReceiverId == user.Id &&
+                    !x.IsRead &&
+                    !x.IsTrashedByReceiver);
+        }
+    }
 }
 
 <aside class="nexora-sidebar">
@@ -8,41 +32,48 @@
     <div class="sidebar-header">
 
         <a href="@Url.Action("SendMail", "Message")"
-               class="sidebar-compose">
+           class="sidebar-compose">
             Yeni Mesaj
         </a>
 
     </div>
 
+
     <nav class="sidebar-menu">
 
         <!-- GELEN KUTUSU -->
-
         <a asp-controller="Message"
            asp-action="Index"
-           class="sidebar-link @(
+           class="sidebar-link nx-inbox-link @(
            ViewContext.RouteData.Values["controller"]?.ToString() == "Message" &&
-           ViewContext.RouteData.Values["action"]?.ToString() == "Index"
+           currentAction == "Index"
            ? "active" : "")">
 
-            Gelen Kutusu
+            <span>Gelen Kutusu</span>
+
+            @if (unreadCount > 0)
+            {
+                <span class="nx-unread-badge">
+                    @unreadCount
+                </span>
+            }
 
         </a>
 
 
         <!-- GÖNDERİLENLER -->
         <a href="@Url.Action("Sent", "Message")"
-               class="sidebar-link @(currentAction == "Sent" ? "active" : "")">
+           class="sidebar-link @(currentAction == "Sent" ? "active" : "")">
 
             Gönderilenler
 
         </a>
 
-        <!-- TASLAKLAR -->
 
+        <!-- TASLAKLAR -->
         <a asp-controller="Message"
            asp-action="Drafts"
-           class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Drafts" ? "active" : "")">
+           class="sidebar-link @(currentAction == "Drafts" ? "active" : "")">
 
             Taslaklar
 
@@ -51,17 +82,17 @@
 
         <!-- YILDIZLI MESAJLAR -->
         <a href="@Url.Action("Starred", "Message")"
-               class="sidebar-link @(currentAction == "Starred" ? "active" : "")">
+           class="sidebar-link @(currentAction == "Starred" ? "active" : "")">
 
             Yıldızlı Mesajlar
 
         </a>
 
-        <!-- ÇÖP KUTUSU -->
 
+        <!-- ÇÖP KUTUSU -->
         <a asp-controller="Message"
            asp-action="Trash"
-           class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Trash" ? "active" : "")">
+           class="sidebar-link @(currentAction == "Trash" ? "active" : "")">
 
             Çöp Kutusu
 
@@ -80,7 +111,45 @@
         </a>
 
 
+        <!-- PROFİLİM -->
+        <a asp-controller="Profile"
+           asp-action="Index"
+           class="sidebar-link @(
+           ViewContext.RouteData.Values["controller"]?.ToString() == "Profile"
+           ? "active" : "")">
+
+            Profilim
+
+        </a>
 
     </nav>
 
 </aside>
+
+
+<style>
+
+    /* GELEN KUTUSU SAYACI */
+
+    .nx-inbox-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .nx-unread-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 23px;
+        height: 23px;
+        padding: 0 6px;
+        background: #6d48ba;
+        color: #ffffff;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+</style>

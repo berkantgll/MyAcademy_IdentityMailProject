@@ -1,4 +1,5 @@
-﻿@model UserMessage
+﻿@using IdentityMail.Web.Entities
+@model UserMessage
 
 @{
     ViewData["Title"] = "Gönderilen Mesaj Detayı";
@@ -27,20 +28,18 @@
 <section class="nx-detail">
 
     <!-- ÜST ARAÇ ÇUBUĞU -->
-
     <div class="nx-detail-toolbar">
 
         <a asp-controller="Message"
-               asp-action="Sent"
-               class="nx-detail-back">
+           asp-action="Sent"
+           class="nx-detail-back">
 
             <span aria-hidden="true">←</span>
             Gönderilenler
 
         </a>
 
-
-        <!-- OKUNMA DURUMU -->
+        <!-- MESAJIN OKUNMA DURUMU -->
         @if (Model.IsRead)
         {
             <div class="nx-detail-status">
@@ -66,7 +65,6 @@
 
 
     <!-- MESAJ BAŞLIĞI -->
-
     <div class="nx-detail-heading">
 
         <span class="nx-detail-eyebrow">
@@ -79,11 +77,9 @@
 
 
     <!-- ALICI BİLGİLERİ -->
-
     <div class="nx-detail-sender">
 
-        <!-- PROFİL AVATARI -->
-
+        <!-- AVATAR -->
         <div class="nx-sender-avatar">
 
             @initials.ToUpperInvariant()
@@ -91,31 +87,23 @@
         </div>
 
 
-        <!-- ALICI ADI VE EMAIL -->
-
+        <!-- ALICI ADI VE E-POSTA -->
         <div class="nx-sender-information">
 
             <span class="nx-sent-detail-label">
                 ALICI
             </span>
 
-            <h2>
-                @fullName
-            </h2>
+            <h2>@fullName</h2>
 
-            <p>
-                @Model.Receiver?.Email
-            </p>
+            <p>@Model.Receiver?.Email</p>
 
-            <span>
-                Nexora kullanıcısı
-            </span>
+            <span>Nexora kullanıcısı</span>
 
         </div>
 
 
         <!-- GÖNDERİM TARİHİ -->
-
         <time class="nx-detail-date"
               datetime="@Model.SendDate.ToString("yyyy-MM-ddTHH:mm:ss")">
 
@@ -127,12 +115,14 @@
 
 
     <!-- MESAJ İÇERİĞİ -->
+    <article class="nx-detail-body">
 
-    <article class="nx-detail-body">@Model.Body</article>
+        @Model.Body
+
+    </article>
 
 
     <!-- ALT İŞLEMLER -->
-
     <div class="nx-detail-footer">
 
         <div class="nx-detail-footer-info">
@@ -142,8 +132,8 @@
         </div>
 
         <a asp-controller="Message"
-               asp-action="Sent"
-               class="nx-detail-return">
+           asp-action="Sent"
+           class="nx-detail-return">
 
             ← Gönderilenlere Dön
 

@@ -6,16 +6,45 @@
     Layout = "_NexoraLayout";
 
     var categories = ViewBag.Categories as List<MailCategory>
-                 ?? new List<MailCategory>();
-    var unreadCount = Model.Count(x => !x.IsRead);
+                     ?? new List<MailCategory>();
+
+    var unreadCount = (int)ViewBag.UnreadCount;
+    var search = ViewBag.Search as string ?? "";
+    var status = ViewBag.Status as string ?? "";
+    bool starred = ViewBag.Starred == true;
+    int? categoryId = ViewBag.CategoryId as int?;
+    var startDate = ViewBag.StartDate as string ?? "";
+    var endDate = ViewBag.EndDate as string ?? "";
+    var sort = ViewBag.Sort as string ?? "newest";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
 }
 
 <section class="nexora-inbox">
 
+    <!-- İŞLEM MESAJLARI -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="status">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+
     <!-- SAYFA BAŞLIĞI -->
     <div class="inbox-heading">
+
         <div>
-            <span class="inbox-eyebrow">NEXORA MAIL</span>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL
+            </span>
 
             <h1>Gelen Kutusu</h1>
 
@@ -29,31 +58,103 @@
             <span class="unread-indicator"></span>
             @unreadCount okunmamış
         </div>
+
     </div>
 
+
+    <!-- ARAMA VE FİLTRELEME -->
+    <form action="@Url.Action("Index", "Message", new { area = "" })"
+          method="get"
+          class="nx-inbox-filters">
+
+        <div class="nx-filter-field nx-filter-search">
+            <label for="search">Gönderen veya konu</label>
+            <input id="search" name="search" type="text"
+                   value="@search" placeholder="Mesaj ara..." />
+        </div>
+
+        <div class="nx-filter-field">
+            <label for="status">Okunma durumu</label>
+            <select id="status" name="status">
+                <option value="">Tümü</option>
+                <option value="read" selected="@(status == "read")">Okundu</option>
+                <option value="unread" selected="@(status == "unread")">Okunmadı</option>
+            </select>
+        </div>
+
+        <div class="nx-filter-field">
+            <label for="categoryId">Kategori</label>
+            <select id="categoryId" name="categoryId">
+                <option value="">Tüm kategoriler</option>
+                @foreach (var category in categories)
+                {
+                    <option value="@category.Id" selected="@(categoryId == category.Id)">
+                        @category.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="nx-filter-field">
+            <label for="startDate">Başlangıç tarihi</label>
+            <input id="startDate" name="startDate" type="date" value="@startDate" />
+        </div>
+
+        <div class="nx-filter-field">
+            <label for="endDate">Bitiş tarihi</label>
+            <input id="endDate" name="endDate" type="date" value="@endDate" />
+        </div>
+
+        <div class="nx-filter-field">
+            <label for="sort">Sıralama</label>
+            <select id="sort" name="sort">
+                <option value="newest" selected="@(sort != "oldest")">En yeni</option>
+                <option value="oldest" selected="@(sort == "oldest")">En eski</option>
+            </select>
+        </div>
+
+        <div class="nx-filter-actions">
+            <label class="nx-star-check">
+                <input type="checkbox" name="starred" value="true" checked="@starred" />
+                Yalnızca yıldızlı
+            </label>
+
+            <button type="submit" class="nx-filter-submit">Filtrele</button>
+            <a href="@Url.Action("Index", "Message", new { area = "" })"
+               class="nx-filter-reset">Temizle</a>
+        </div>
+    </form>
+
+
+    <!-- GELEN KUTUSU PANELİ -->
     <div class="inbox-panel">
 
         <div class="inbox-panel-header">
             <h2>Mesajların</h2>
-            <span>@Model.Count mesaj</span>
+            <span>@ViewBag.TotalMessages mesaj</span>
         </div>
+
 
         @if (Model.Count == 0)
         {
             <div class="inbox-empty">
+
                 <div class="empty-icon">✉</div>
 
                 <h3>Gelen kutun tertemiz!</h3>
 
                 <p>
-                    Henüz sana gönderilmiş bir mesaj bulunmuyor.
+                    Arama veya filtreye uygun mesaj bulunamadı.
                 </p>
 
                 <a asp-controller="Message"
                    asp-action="SendMail"
                    class="empty-compose-btn">
+
                     + Yeni Mesaj Oluştur
+
                 </a>
+
             </div>
         }
         else
@@ -65,7 +166,8 @@
                     var firstName = item.Sender?.FirstName ?? "";
                     var lastName = item.Sender?.LastName ?? "";
 
-                    var fullName = $"{firstName} {lastName}".Trim();
+                    var fullName =
+                        $"{firstName} {lastName}".Trim();
 
                     if (string.IsNullOrWhiteSpace(fullName))
                     {
@@ -81,8 +183,10 @@
                         initials = "?";
                     }
 
+
                     <!-- MESAJ SATIRI -->
                     <div class="nx-inbox-entry @(item.IsRead ? "" : "is-unread")">
+
 
                         <!-- YILDIZLAMA -->
                         <form asp-controller="Message"
@@ -99,7 +203,9 @@
                                 @(item.IsStarred ? "★" : "☆")
 
                             </button>
+
                         </form>
+
 
                         <!-- MESAJ DETAY BAĞLANTISI -->
                         <a asp-controller="Message"
@@ -111,6 +217,7 @@
                             <div class="nx-inbox-avatar">
                                 @initials.ToUpperInvariant()
                             </div>
+
 
                             <!-- MESAJ BİLGİLERİ -->
                             <div class="nx-inbox-copy">
@@ -129,6 +236,7 @@
 
                             </div>
 
+
                             <!-- TARİH -->
                             <div class="nx-inbox-meta">
 
@@ -145,16 +253,16 @@
 
                         </a>
 
+
                         <!-- ÜÇ NOKTA MENÜSÜ -->
-                        <!-- ÜÇ NOKTA MENÜSÜ -->
-                        <details class="nx-message-menu"
-                                 onmouseleave="this.open = false">
+                        <details class="nx-message-menu">
 
                             <summary class="nx-menu-trigger"
                                      title="Mesaj işlemleri"
                                      aria-label="Mesaj işlemleri">
 
-                                <svg width="20" height="20"
+                                <svg width="20"
+                                     height="20"
                                      viewBox="0 0 24 24"
                                      fill="none"
                                      stroke="currentColor"
@@ -165,11 +273,14 @@
                                     <circle cx="12" cy="5" r="1" />
                                     <circle cx="12" cy="12" r="1" />
                                     <circle cx="12" cy="19" r="1" />
+
                                 </svg>
 
                             </summary>
 
+
                             <div class="nx-message-dropdown">
+
 
                                 <!-- MESAJI AÇ -->
                                 <a asp-controller="Message"
@@ -180,6 +291,7 @@
 
                                 </a>
 
+
                                 <!-- YANITLA -->
                                 <a asp-controller="Message"
                                    asp-action="Reply"
@@ -188,6 +300,7 @@
                                     ↩ Yanıtla
 
                                 </a>
+
 
                                 <!-- OKUNMADI İŞARETLE -->
                                 @if (item.IsRead)
@@ -205,12 +318,15 @@
                                     </form>
                                 }
 
+
                                 <div class="nx-menu-divider"></div>
+
 
                                 <!-- KATEGORİYE EKLE -->
                                 <div class="nx-menu-category-heading">
                                     Kategoriye Ekle
                                 </div>
+
 
                                 <div class="nx-menu-category-list">
 
@@ -256,7 +372,9 @@
 
                                 </div>
 
+
                                 <div class="nx-menu-divider"></div>
+
 
                                 <!-- ÇÖPE TAŞI -->
                                 <form asp-controller="Message"
@@ -268,7 +386,8 @@
                                     <button type="submit"
                                             class="nx-menu-danger">
 
-                                        <svg width="16" height="16"
+                                        <svg width="16"
+                                             height="16"
                                              viewBox="0 0 24 24"
                                              fill="none"
                                              stroke="currentColor"
@@ -291,7 +410,71 @@
 
                                 </form>
 
+
+                                <!-- ŞİKAYET ET -->
+                                <div class="nx-menu-divider"></div>
+
+                                <form action="@Url.Action("Report", "Message", new { area = "" })"
+                                      method="post"
+                                      class="nx-report-form">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <!-- ŞİKAYET EDİLEN MESAJ -->
+                                    <input type="hidden"
+                                           name="messageId"
+                                           value="@item.Id" />
+
+
+                                    <!-- ŞİKAYET NEDENİ -->
+                                    <label for="report-reason-@item.Id"
+                                           class="nx-report-label">
+
+                                        ⚑ Mesajı Şikâyet Et
+
+                                    </label>
+
+
+                                    <select id="report-reason-@item.Id"
+                                            name="reason"
+                                            class="nx-report-select"
+                                            required>
+
+                                        <option value="" selected disabled>
+                                            Şikâyet nedeni seç
+                                        </option>
+
+                                        <option value="Spam">
+                                            Spam
+                                        </option>
+
+                                        <option value="Rahatsız edici içerik">
+                                            Rahatsız edici içerik
+                                        </option>
+
+                                        <option value="Uygunsuz mesaj">
+                                            Uygunsuz mesaj
+                                        </option>
+
+                                        <option value="Diğer">
+                                            Diğer
+                                        </option>
+
+                                    </select>
+
+
+                                    <button type="submit"
+                                            class="nx-report-submit">
+
+                                        Şikâyeti Gönder
+
+                                    </button>
+
+                                </form>
+
                             </div>
+
+
 
                         </details>
 
@@ -304,4 +487,217 @@
 
     </div>
 
+    <!-- SAYFALAMA -->
+    @if (totalPages > 1)
+    {
+        <div class="nx-inbox-pagination">
+            @if (currentPage > 1)
+            {
+                <a href="@Url.Action("Index", "Message", new
+                   {
+                       area = "",
+                       search,
+                       status,
+                       starred,
+                       categoryId,
+                       startDate,
+                       endDate,
+                       sort,
+                       page = currentPage - 1
+                   })">← Önceki</a>
+            }
+
+            <span>Sayfa @currentPage / @totalPages</span>
+
+            @if (currentPage < totalPages)
+            {
+                <a href="@Url.Action("Index", "Message", new
+                   {
+                       area = "",
+                       search,
+                       status,
+                       starred,
+                       categoryId,
+                       startDate,
+                       endDate,
+                       sort,
+                       page = currentPage + 1
+                   })">Sonraki →</a>
+            }
+        </div>
+    }
+
 </section>
+
+
+<style>
+
+    /* ARAMA VE FİLTRELER */
+    .nx-inbox-filters {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        padding: 20px;
+        margin-bottom: 24px;
+        border: 1px solid #e4e4eb;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .nx-filter-field label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .nx-filter-field input,
+    .nx-filter-field select {
+        box-sizing: border-box;
+        width: 100%;
+        height: 40px;
+        padding: 8px 10px;
+        border: 1px solid #d6d6e0;
+        border-radius: 7px;
+        background: #f7f7fa;
+        color: #23232d;
+        font-family: inherit;
+        font-size: 12px;
+    }
+
+    .nx-filter-actions {
+        display: flex;
+        grid-column: 1 / -1;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .nx-star-check {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-right: auto;
+        font-size: 12px;
+    }
+
+    .nx-filter-submit,
+    .nx-filter-reset,
+    .nx-inbox-pagination a {
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .nx-filter-submit {
+        border: 0;
+        background: #6d48ba;
+        color: white;
+    }
+
+    .nx-filter-reset,
+    .nx-inbox-pagination a {
+        border: 1px solid #d6d6e0;
+        background: #f7f7fa;
+        color: #6d48ba;
+    }
+
+    .nx-inbox-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 22px;
+        font-size: 13px;
+    }
+
+    html[data-theme="dark"] .nx-inbox-filters {
+        background: #1a1a20;
+        border-color: #303039;
+        color: #f5f5f5;
+    }
+
+    html[data-theme="dark"] .nx-filter-field input,
+    html[data-theme="dark"] .nx-filter-field select,
+    html[data-theme="dark"] .nx-filter-reset,
+    html[data-theme="dark"] .nx-inbox-pagination a {
+        background: #25252d;
+        border-color: #454552;
+        color: #f5f5f5;
+    }
+
+    @@media (max-width: 700px) {
+        .nx-inbox-filters {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    /* ŞİKAYET FORMU */
+
+    .nx-report-form {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        padding: 12px;
+        margin: 0;
+    }
+
+    .nx-report-label {
+        display: block;
+        color: #b45353;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .nx-report-select {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        padding: 9px 10px;
+        border: 1px solid #c9c9d4;
+        border-radius: 7px;
+        background: #ffffff;
+        color: #24242c;
+        font-family: inherit;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    html[data-theme="dark"] .nx-report-select {
+        background: #262630;
+        color: #f5f5f5;
+        border-color: #454552;
+    }
+
+    .nx-report-select:focus {
+        outline: 2px solid #8b5cf6;
+        outline-offset: 1px;
+    }
+
+    .nx-report-submit {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #854343;
+        border-radius: 7px;
+        background: #492526;
+        color: #fca5a5;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .nx-report-submit:hover {
+            background: #653033;
+            color: #ffffff;
+        }
+
+</style>
+

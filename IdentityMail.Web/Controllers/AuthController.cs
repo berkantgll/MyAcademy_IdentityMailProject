@@ -16,6 +16,7 @@ namespace IdentityMail.Web.Controllers
             return View();
         }
 
+
         // REGISTER POST
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDto registerDto)
@@ -97,7 +98,6 @@ namespace IdentityMail.Web.Controllers
                 return View(loginDto);
             }
 
-            // ADMIN KONTROLÜ
             if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 return RedirectToAction(
@@ -107,7 +107,6 @@ namespace IdentityMail.Web.Controllers
                 );
             }
 
-            // NORMAL KULLANICI
             return RedirectToAction(
                 "Index",
                 "Message",
@@ -116,8 +115,31 @@ namespace IdentityMail.Web.Controllers
         }
 
 
-        // LOGOUT
+        // ŞİFREMİ UNUTTUM GET
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
+
+        // ŞİFREMİ UNUTTUM POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(ForgotPasswordDto dto)
+        {
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            ViewBag.Message =
+                "Bu projede e-posta gönderimi aktif değil. " +
+                "Şifre sıfırlama bağlantısı gönderilmedi.";
+
+            return View(dto);
+        }
+
+
+        // LOGOUT
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -126,6 +148,5 @@ namespace IdentityMail.Web.Controllers
 
             return RedirectToAction("Login", "Auth");
         }
-
     }
 }

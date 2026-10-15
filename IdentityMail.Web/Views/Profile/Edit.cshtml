@@ -1,0 +1,390 @@
+﻿@model IdentityMail.Web.DTOs.EditProfileDto
+
+@{
+    ViewData["Title"] = "Profilimi Düzenle";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nx-edit-profile-page">
+
+    <!-- GERİ DÖN -->
+    <a href="@Url.Action("Index", "Profile", new { area = "" })"
+       class="nx-ep-back">
+
+        ← Profilime Dön
+
+    </a>
+
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="nx-ep-heading">
+
+        <span class="nx-ep-eyebrow">
+            NEXORA / HESABIM
+        </span>
+
+        <h1>Profilimi Düzenle</h1>
+
+        <p>
+            Adını ve soyadını buradan
+            güncelleyebilirsin.
+        </p>
+
+    </div>
+
+
+    <!-- DÜZENLEME FORMU -->
+    <div class="nx-ep-panel">
+
+        <div class="nx-ep-panel-header">
+
+            <h2>Kişisel Bilgiler</h2>
+
+            <p>
+                Değişikliklerin Nexora hesabına
+                kaydedilecektir.
+            </p>
+
+        </div>
+
+
+        <form action="@Url.Action("Edit", "Profile", new { area = "" })"
+              method="post"
+              class="nx-ep-form">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- DOĞRULAMA HATALARI -->
+            <div asp-validation-summary="ModelOnly"
+                 class="nx-ep-validation">
+            </div>
+
+
+            <!-- AD -->
+            <div class="nx-ep-field">
+
+                <label asp-for="FirstName">
+                    Ad
+                </label>
+
+                <input asp-for="FirstName"
+                       class="nx-ep-input"
+                       placeholder="Adınızı giriniz"
+                       maxlength="50"
+                       autocomplete="given-name" />
+
+                <span asp-validation-for="FirstName"
+                      class="nx-ep-error">
+                </span>
+
+            </div>
+
+
+            <!-- SOYAD -->
+            <div class="nx-ep-field">
+
+                <label asp-for="LastName">
+                    Soyad
+                </label>
+
+                <input asp-for="LastName"
+                       class="nx-ep-input"
+                       placeholder="Soyadınızı giriniz"
+                       maxlength="50"
+                       autocomplete="family-name" />
+
+                <span asp-validation-for="LastName"
+                      class="nx-ep-error">
+                </span>
+
+            </div>
+
+
+            <!-- BUTONLAR -->
+            <div class="nx-ep-actions">
+
+                <a href="@Url.Action("Index", "Profile", new { area = "" })"
+                   class="nx-ep-cancel">
+
+                    Vazgeç
+
+                </a>
+
+                <button type="submit"
+                        class="nx-ep-save">
+
+                    ✓ Değişiklikleri Kaydet
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- BİLGİLENDİRME -->
+    <div class="nx-ep-info">
+
+        <span>ⓘ</span>
+
+        <p>
+            Bu sayfada yalnızca ad ve soyad
+            bilgilerini değiştirebilirsin.
+
+            E-posta, kullanıcı adı ve şifre
+            bilgilerin bu işlemden etkilenmez.
+        </p>
+
+    </div>
+
+</section>
+
+
+<style>
+
+    /* TEMA RENKLERİ */
+    .nx-edit-profile-page {
+        --ep-card: #ffffff;
+        --ep-input: #f7f7fa;
+        --ep-border: #e4e4eb;
+        --ep-title: #18181b;
+        --ep-text: #71717a;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+
+    html[data-theme="dark"] .nx-edit-profile-page {
+        --ep-card: #1a1a20;
+        --ep-input: #25252d;
+        --ep-border: #353540;
+        --ep-title: #f5f5f5;
+        --ep-text: #a1a1aa;
+    }
+
+
+    /* GERİ DÖN */
+    .nx-ep-back {
+        display: inline-block;
+        margin-bottom: 27px;
+        color: #8b5cf6;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .nx-ep-back:hover {
+            color: #a78bfa;
+        }
+
+
+    /* BAŞLIK */
+    .nx-ep-heading {
+        margin-bottom: 27px;
+    }
+
+    .nx-ep-eyebrow {
+        display: block;
+        margin-bottom: 10px;
+        color: #8b5cf6;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+    }
+
+    .nx-ep-heading h1 {
+        margin: 0;
+        color: var(--ep-title);
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .nx-ep-heading p {
+        margin: 10px 0 0;
+        color: var(--ep-text);
+        font-size: 13px;
+    }
+
+
+    /* FORM PANELİ */
+    .nx-ep-panel {
+        background: var(--ep-card);
+        border: 1px solid var(--ep-border);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 20px;
+    }
+
+    .nx-ep-panel-header {
+        margin-bottom: 29px;
+    }
+
+        .nx-ep-panel-header h2 {
+            color: var(--ep-title);
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0 0 9px;
+        }
+
+        .nx-ep-panel-header p {
+            color: var(--ep-text);
+            font-size: 12px;
+            margin: 0;
+        }
+
+
+    /* FORM */
+    .nx-ep-form {
+        display: flex;
+        flex-direction: column;
+        gap: 23px;
+    }
+
+    .nx-ep-field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+        .nx-ep-field label {
+            color: var(--ep-title);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+    .nx-ep-input {
+        display: block;
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 16px;
+        background: var(--ep-input);
+        border: 1px solid var(--ep-border);
+        border-radius: 9px;
+        color: var(--ep-title);
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+        .nx-ep-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+        }
+
+        .nx-ep-input::placeholder {
+            color: var(--ep-text);
+        }
+
+
+    /* HATALAR */
+    .nx-ep-error {
+        color: #ef4444;
+        font-size: 12px;
+    }
+
+    .nx-ep-validation {
+        color: #ef4444;
+        font-size: 12px;
+    }
+
+        .nx-ep-validation:empty {
+            display: none;
+        }
+
+
+    /* BUTONLAR */
+    .nx-ep-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 13px;
+        padding-top: 22px;
+        border-top: 1px solid var(--ep-border);
+    }
+
+    .nx-ep-cancel {
+        display: inline-block;
+        padding: 12px 20px;
+        border: 1px solid var(--ep-border);
+        border-radius: 9px;
+        color: var(--ep-title);
+        background: var(--ep-input);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .nx-ep-cancel:hover {
+            color: #8b5cf6;
+        }
+
+    .nx-ep-save {
+        padding: 13px 21px;
+        background: #6d48ba;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .nx-ep-save:hover {
+            background: #8055d6;
+        }
+
+
+    /* BİLGİ NOTU */
+    .nx-ep-info {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 17px;
+        border: 1px solid var(--ep-border);
+        border-radius: 10px;
+        background: var(--ep-card);
+        color: var(--ep-text);
+    }
+
+        .nx-ep-info > span {
+            color: #8b5cf6;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .nx-ep-info p {
+            font-size: 12px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+
+    /* MOBİL */
+    @@media (max-width: 650px) {
+
+        .nx-edit-profile-page {
+            padding: 17px;
+        }
+
+        .nx-ep-panel {
+            padding: 20px;
+        }
+
+        .nx-ep-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .nx-ep-cancel,
+        .nx-ep-save {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+</style>

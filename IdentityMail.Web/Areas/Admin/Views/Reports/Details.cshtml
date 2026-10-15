@@ -1,0 +1,416 @@
+﻿@using IdentityMail.Web.Entities
+@model MessageReport
+
+@{
+    ViewData["Title"] = "Şikâyet Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var message = ViewBag.Message as UserMessage;
+    var reporter = ViewBag.Reporter as AppUser;
+
+    var senderName = message?.Sender == null
+        ? "Bilinmeyen Gönderici"
+        : $"{message.Sender.FirstName} {message.Sender.LastName}".Trim();
+
+    var receiverName = message?.Receiver == null
+        ? "Bilinmeyen Alıcı"
+        : $"{message.Receiver.FirstName} {message.Receiver.LastName}".Trim();
+
+    var reporterName = reporter == null
+        ? "Bilinmeyen Kullanıcı"
+        : $"{reporter.FirstName} {reporter.LastName}".Trim();
+}
+
+<section class="nx-report-detail">
+
+    <!-- GERİ DÖN -->
+    <a href="@Url.Action("Index", "Reports", new { area = "Admin" })"
+       class="nx-rd-back">
+
+        ← Şikâyet Listesine Dön
+
+    </a>
+
+
+    <!-- BAŞLIK -->
+    <div class="nx-rd-header">
+
+        <div>
+            <span class="nx-rd-eyebrow">
+                NEXORA / ADMIN PANEL
+            </span>
+
+            <h1>Şikâyet Detayı</h1>
+
+            <p>
+                Şikâyet edilen mesajı ve
+                kullanıcı bilgilerini incele.
+            </p>
+        </div>
+
+        @if (Model.IsReviewed)
+        {
+            <span class="nx-rd-status reviewed">
+                ✓ İncelendi
+            </span>
+        }
+        else
+        {
+            <span class="nx-rd-status pending">
+                ● Bekliyor
+            </span>
+        }
+
+    </div>
+
+
+    <!-- BAŞARI MESAJI -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="nx-rd-success" role="status">
+            @TempData["Success"]
+        </div>
+    }
+
+
+    <!-- ŞİKAYET BİLGİLERİ -->
+    <div class="nx-rd-panel">
+
+        <h2>Şikâyet Bilgileri</h2>
+
+        <div class="nx-rd-info-grid">
+
+            <div class="nx-rd-info-item">
+                <span>Şikâyet No</span>
+                <strong>#@Model.Id</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Şikâyet Nedeni</span>
+                <strong>@Model.Reason</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Şikâyet Eden</span>
+                <strong>@reporterName</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Şikâyet Tarihi</span>
+                <strong>
+                    @Model.ReportedAt.ToString("dd.MM.yyyy HH:mm") UTC
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MESAJ BİLGİLERİ -->
+    <div class="nx-rd-panel">
+
+        <h2>Şikâyet Edilen Mesaj</h2>
+
+        <div class="nx-rd-info-grid">
+
+            <div class="nx-rd-info-item">
+                <span>Gönderen</span>
+                <strong>@senderName</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Alıcı</span>
+                <strong>@receiverName</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Mesaj No</span>
+                <strong>#@Model.UserMessageId</strong>
+            </div>
+
+            <div class="nx-rd-info-item">
+                <span>Gönderim Tarihi</span>
+                <strong>
+                    @message?.SendDate.ToString("dd.MM.yyyy HH:mm")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="nx-rd-message">
+
+            <span class="nx-rd-field-label">
+                Mesaj Konusu
+            </span>
+
+            <h3>@message?.Subject</h3>
+
+            <div class="nx-rd-divider"></div>
+
+            <span class="nx-rd-field-label">
+                Mesaj İçeriği
+            </span>
+
+            <div class="nx-rd-message-body">
+                @message?.Body
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- İNCELEME İŞLEMİ -->
+    <div class="nx-rd-panel">
+
+        <h2>İnceleme İşlemi</h2>
+
+        @if (Model.IsReviewed)
+        {
+            <div class="nx-rd-reviewed-info">
+                <span>✓</span>
+
+                Bu şikâyet incelendi olarak işaretlenmiş.
+            </div>
+        }
+        else
+        {
+            <p class="nx-rd-description">
+                Mesajı ve şikâyet nedenini kontrol ettikten
+                sonra incelemeyi tamamlayabilirsin.
+            </p>
+
+            <form action="@Url.Action("MarkReviewed", "Reports", new { area = "Admin" })"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.Id" />
+
+                <button type="submit"
+                        class="nx-rd-review-button">
+
+                    ✓ İncelendi Olarak İşaretle
+
+                </button>
+
+            </form>
+        }
+
+    </div>
+
+</section>
+
+
+<style>
+
+    .nx-report-detail {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+
+    .nx-rd-back {
+        display: inline-block;
+        margin-bottom: 27px;
+        color: #a78bfa;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .nx-rd-back:hover {
+            color: #c4b5fd;
+        }
+
+    .nx-rd-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 27px;
+    }
+
+    .nx-rd-eyebrow {
+        display: block;
+        color: #a78bfa;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        margin-bottom: 10px;
+    }
+
+    .nx-rd-header h1 {
+        color: #f5f5f5;
+        font-size: 29px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .nx-rd-header p {
+        color: #a1a1aa;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .nx-rd-status {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .nx-rd-status.pending {
+            background: #423818;
+            color: #facc15;
+        }
+
+        .nx-rd-status.reviewed {
+            background: #19372b;
+            color: #86efac;
+        }
+
+    .nx-rd-success {
+        padding: 14px 18px;
+        margin-bottom: 22px;
+        background: #19372b;
+        border: 1px solid #2e6045;
+        border-radius: 10px;
+        color: #86efac;
+        font-size: 13px;
+    }
+
+    .nx-rd-panel {
+        background: #1a1a20;
+        border: 1px solid #303039;
+        border-radius: 14px;
+        padding: 26px;
+        margin-bottom: 22px;
+    }
+
+        .nx-rd-panel h2 {
+            color: #f5f5f5;
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0 0 24px;
+        }
+
+    .nx-rd-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .nx-rd-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        min-width: 0;
+    }
+
+        .nx-rd-info-item span {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .nx-rd-info-item strong {
+            color: #f5f5f5;
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+    .nx-rd-message {
+        margin-top: 27px;
+        padding: 22px;
+        background: #222229;
+        border: 1px solid #353540;
+        border-radius: 11px;
+    }
+
+    .nx-rd-field-label {
+        display: block;
+        color: #a1a1aa;
+        font-size: 12px;
+        margin-bottom: 11px;
+    }
+
+    .nx-rd-message h3 {
+        color: #f5f5f5;
+        font-size: 17px;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .nx-rd-divider {
+        border-top: 1px solid #353540;
+        margin: 22px 0;
+    }
+
+    .nx-rd-message-body {
+        color: #d4d4d8;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .nx-rd-description {
+        color: #a1a1aa;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .nx-rd-review-button {
+        padding: 12px 18px;
+        background: #6d48ba;
+        border: none;
+        border-radius: 9px;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .nx-rd-review-button:hover {
+            background: #8055d6;
+        }
+
+    .nx-rd-reviewed-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        background: #19372b;
+        border-radius: 9px;
+        color: #86efac;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 650px) {
+
+        .nx-report-detail {
+            padding: 16px;
+        }
+
+        .nx-rd-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .nx-rd-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .nx-rd-panel {
+            padding: 18px;
+        }
+    }
+
+</style>

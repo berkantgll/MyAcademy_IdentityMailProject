@@ -130,15 +130,38 @@
                             </p>
 
 
-                            <!-- TASLAĞI DÜZENLE -->
-                            <a asp-controller="Message"
-                               asp-action="EditDraft"
-                               asp-route-id="@item.Id"
-                               class="nx-draft-edit">
+                            <!-- TASLAK İŞLEMLERİ -->
+                            <div class="nx-draft-actions">
 
-                                Taslağı Düzenle →
+                                <!-- DÜZENLE -->
+                                <a asp-controller="Message"
+                                   asp-action="EditDraft"
+                                   asp-route-id="@item.Id"
+                                   class="nx-draft-edit">
 
-                            </a>
+                                    Taslağı Düzenle →
+
+                                </a>
+
+
+                                <!-- SİL -->
+                                <form asp-controller="Message"
+                                      asp-action="DeleteDraft"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      asp-antiforgery="true"
+                                      onsubmit="return confirm('Bu taslağı silmek istiyor musun?');">
+
+                                    <button type="submit"
+                                            class="nx-draft-delete">
+
+                                        Taslağı Sil
+
+                                    </button>
+
+                                </form>
+
+                            </div>
 
                         </div>
 
@@ -151,3 +174,36 @@
     </div>
 
 </section>
+
+
+<style>
+
+    /* TASLAK İŞLEMLERİ */
+
+    .nx-draft-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-top: 12px;
+    }
+
+        .nx-draft-actions form {
+            margin: 0;
+        }
+
+    .nx-draft-delete {
+        border: none;
+        background: transparent;
+        color: #ef4444;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+    }
+
+        .nx-draft-delete:hover {
+            color: #f87171;
+            text-decoration: underline;
+        }
+
+</style>

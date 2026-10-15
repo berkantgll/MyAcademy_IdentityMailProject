@@ -1,0 +1,515 @@
+﻿@model IdentityMail.Web.Entities.AppUser
+
+@{
+    ViewData["Title"] = "Profilim";
+    Layout = "_NexoraLayout";
+
+    var firstName = Model.FirstName ?? "";
+    var lastName = Model.LastName ?? "";
+
+    var fullName = $"{firstName} {lastName}".Trim();
+
+    if (string.IsNullOrWhiteSpace(fullName))
+    {
+        fullName = "Nexora Kullanıcısı";
+    }
+
+    var initials =
+        (firstName.Length > 0 ? firstName[..1] : "") +
+        (lastName.Length > 0 ? lastName[..1] : "");
+
+    if (string.IsNullOrWhiteSpace(initials))
+    {
+        initials = "?";
+    }
+}
+
+<section class="nx-profile-page">
+
+    
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="status">
+            @TempData["Success"]
+        </div>
+    }
+
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="nx-profile-heading">
+
+        <div>
+            <span class="nx-profile-eyebrow">
+                NEXORA / HESABIM
+            </span>
+
+            <h1>Profilim</h1>
+
+            <p>
+                Kişisel bilgilerini ve hesap
+                ayarlarını buradan yönetebilirsin.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- PROFİL KARTI -->
+    <div class="nx-profile-card">
+
+        <div class="nx-profile-cover"></div>
+
+        <div class="nx-profile-main">
+
+            <!-- PROFİL FOTOĞRAFI -->
+            <div class="nx-profile-avatar">
+
+                @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
+                {
+                    <img src="@Url.Content(Model.ProfileImageUrl)"
+                         alt="Profil fotoğrafı" />
+                }
+                else
+                {
+                    <span>
+                        @initials.ToUpperInvariant()
+                    </span>
+                }
+
+            </div>
+
+
+            <!-- KULLANICI BİLGİLERİ -->
+            <div class="nx-profile-identity">
+
+                <h2>@fullName</h2>
+
+                <p>@Model.Email</p>
+
+                <span class="nx-profile-account-type">
+                    Nexora Hesabı
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HESAP BİLGİLERİ -->
+    <div class="nx-profile-panel">
+
+        <div class="nx-profile-panel-heading">
+
+            <h2>Kişisel Bilgilerim</h2>
+
+            <p>
+                Nexora hesabına kayıtlı bilgiler.
+            </p>
+
+        </div>
+
+        
+        <div class="nx-profile-edit-actions">
+
+            <a href="@Url.Action("Edit", "Profile", new { area = "" })"
+               class="nx-profile-edit-button">
+
+                ✎ Bilgilerimi Düzenle
+
+            </a>
+
+        </div>
+
+
+        <div class="nx-profile-info-grid">
+
+            <!-- AD -->
+            <div class="nx-profile-field">
+
+                <label>Ad</label>
+
+                <div class="nx-profile-field-value">
+                    @Model.FirstName
+                </div>
+
+            </div>
+
+
+            <!-- SOYAD -->
+            <div class="nx-profile-field">
+
+                <label>Soyad</label>
+
+                <div class="nx-profile-field-value">
+                    @Model.LastName
+                </div>
+
+            </div>
+
+
+            <!-- KULLANICI ADI -->
+            <div class="nx-profile-field">
+
+                <label>Kullanıcı Adı</label>
+
+                <div class="nx-profile-field-value">
+                    @Model.UserName
+                </div>
+
+            </div>
+
+
+            <!-- E-POSTA -->
+            <div class="nx-profile-field">
+
+                <label>E-posta Adresi</label>
+
+                <div class="nx-profile-field-value">
+                    @Model.Email
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HESAP GÜVENLİĞİ -->
+    <div class="nx-profile-panel">
+
+        <div class="nx-profile-panel-heading">
+
+            <h2>Hesap Güvenliği</h2>
+
+            <p>
+                Şifre işlemlerini ve hesap
+                güvenliğini buradan yöneteceksin.
+            </p>
+
+        </div>
+
+
+        <div class="nx-profile-security">
+
+            <div>
+                <h3>Şifre Yönetimi</h3>
+
+                <p>
+                    Hesabının şifresini
+                    değiştirebilirsin.
+                </p>
+            </div>
+
+           
+            <a href="@Url.Action("ChangePassword", "Profile", new { area = "" })"
+               class="nx-profile-edit-button">
+
+                Şifre Değiştir
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- GELEN KUTUSUNA DÖN -->
+    <a href="@Url.Action("Index", "Message", new { area = "" })"
+       class="nx-profile-back">
+
+        ← Gelen Kutusuna Dön
+
+    </a>
+
+</section>
+
+
+<style>
+
+    /* SAYFA VE TEMA RENKLERİ */
+    .nx-profile-page {
+        --profile-card: #ffffff;
+        --profile-input: #f7f7fa;
+        --profile-border: #e4e4eb;
+        --profile-title: #18181b;
+        --profile-text: #71717a;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+
+    html[data-theme="dark"] .nx-profile-page {
+        --profile-card: #1a1a20;
+        --profile-input: #25252d;
+        --profile-border: #303039;
+        --profile-title: #f5f5f5;
+        --profile-text: #a1a1aa;
+    }
+
+
+    /* BAŞLIK */
+    .nx-profile-heading {
+        margin-bottom: 28px;
+    }
+
+    .nx-profile-eyebrow {
+        display: block;
+        margin-bottom: 10px;
+        color: #8b5cf6;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+    }
+
+    .nx-profile-heading h1 {
+        margin: 0;
+        color: var(--profile-title);
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .nx-profile-heading p {
+        margin: 10px 0 0;
+        color: var(--profile-text);
+        font-size: 13px;
+    }
+
+
+    /* PROFİL KARTI */
+    .nx-profile-card {
+        background: var(--profile-card);
+        border: 1px solid var(--profile-border);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .nx-profile-cover {
+        height: 110px;
+        background: linear-gradient( 120deg, #34245e, #6d48ba, #9b78d3 );
+    }
+
+    .nx-profile-main {
+        display: flex;
+        align-items: flex-end;
+        gap: 22px;
+        padding: 0 28px 27px;
+        margin-top: -38px;
+    }
+
+    .nx-profile-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90px;
+        height: 90px;
+        flex-shrink: 0;
+        border: 4px solid var(--profile-card);
+        border-radius: 50%;
+        background: #302547;
+        color: #c4b5fd;
+        font-size: 28px;
+        font-weight: 800;
+        overflow: hidden;
+    }
+
+        .nx-profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .nx-profile-identity {
+        padding-top: 42px;
+        min-width: 0;
+    }
+
+        .nx-profile-identity h2 {
+            margin: 0 0 7px;
+            color: var(--profile-title);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .nx-profile-identity p {
+            color: var(--profile-text);
+            font-size: 13px;
+            margin-bottom: 12px;
+            overflow-wrap: anywhere;
+        }
+
+    .nx-profile-account-type {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 7px;
+        background: #302547;
+        color: #c4b5fd;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    /* BİLGİ PANELLERİ */
+    .nx-profile-panel {
+        padding: 26px;
+        margin-bottom: 24px;
+        background: var(--profile-card);
+        border: 1px solid var(--profile-border);
+        border-radius: 14px;
+    }
+
+    .nx-profile-panel-heading {
+        margin-bottom: 25px;
+    }
+
+        .nx-profile-panel-heading h2 {
+            color: var(--profile-title);
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .nx-profile-panel-heading p {
+            color: var(--profile-text);
+            font-size: 12px;
+            margin: 0;
+        }
+
+
+    /* KİŞİSEL BİLGİLER */
+    .nx-profile-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .nx-profile-field {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        min-width: 0;
+    }
+
+        .nx-profile-field label {
+            color: var(--profile-text);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .nx-profile-field-value {
+        padding: 14px 16px;
+        background: var(--profile-input);
+        border: 1px solid var(--profile-border);
+        border-radius: 9px;
+        color: var(--profile-title);
+        font-size: 13px;
+        min-height: 48px;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* GÜVENLİK */
+    .nx-profile-security {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px;
+        background: var(--profile-input);
+        border: 1px solid var(--profile-border);
+        border-radius: 10px;
+    }
+
+        .nx-profile-security h3 {
+            color: var(--profile-title);
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .nx-profile-security p {
+            color: var(--profile-text);
+            font-size: 12px;
+            margin: 0;
+        }
+
+    .nx-profile-next {
+        color: #a78bfa;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* GERİ DÖN */
+    .nx-profile-back {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #8b5cf6;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .nx-profile-back:hover {
+            color: #a78bfa;
+        }
+
+
+    /* MOBİL GÖRÜNÜM */
+    @@media (max-width: 700px) {
+
+        .nx-profile-page {
+            padding: 17px;
+        }
+
+        .nx-profile-main {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+        }
+
+        .nx-profile-identity {
+            padding-top: 12px;
+        }
+
+        .nx-profile-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .nx-profile-security {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    
+    /* PROFİL DÜZENLEME BUTONU */
+
+    .nx-profile-edit-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 22px;
+    }
+
+    .nx-profile-edit-button {
+        display: inline-block;
+        padding: 11px 17px;
+        background: #6d48ba;
+        border-radius: 9px;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .nx-profile-edit-button:hover {
+            background: #8055d6;
+            color: #ffffff;
+        }
+
+</style>
