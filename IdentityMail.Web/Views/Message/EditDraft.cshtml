@@ -1,0 +1,165 @@
+﻿@model DraftMessage
+
+@{
+    ViewData["Title"] = "Taslağı Düzenle";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nx-compose">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="nx-compose-header">
+
+        <div>
+            <span class="nx-compose-eyebrow">
+                NEXORA MAIL / TASLAKLAR
+            </span>
+
+            <h1>Taslağı Düzenle</h1>
+
+            <p>
+                Yarım bıraktığın mesajı düzenleyebilir
+                ve tekrar taslak olarak kaydedebilirsin.
+            </p>
+        </div>
+
+        <a asp-controller="Message"
+           asp-action="Drafts"
+           class="nx-compose-back">
+
+            ← Taslaklara Dön
+
+        </a>
+
+    </div>
+
+
+    <!-- TASLAK DÜZENLEME FORMU -->
+    <form asp-controller="Message"
+          asp-action="EditDraft"
+          asp-route-id="@Model.Id"
+          asp-antiforgery="true"
+          method="post"
+          class="nx-compose-form">
+
+        <!-- GENEL HATALAR -->
+        <div asp-validation-summary="ModelOnly"
+             class="nx-form-errors">
+        </div>
+
+
+        <!-- ALICI VE KONU -->
+        <div class="nx-compose-fields">
+
+            <!-- ALICI -->
+            <div class="nx-field-row">
+
+                <label asp-for="ReceiverMail">
+                    Alıcı
+                </label>
+
+                <input asp-for="ReceiverMail"
+                       type="email"
+                       class="nx-field-input"
+                       placeholder="alici@ornek.com"
+                       autocomplete="email" />
+
+                <span asp-validation-for="ReceiverMail"
+                      class="nx-field-error">
+                </span>
+
+            </div>
+
+
+            <!-- KONU -->
+            <div class="nx-field-row">
+
+                <label asp-for="Subject">
+                    Konu
+                </label>
+
+                <input asp-for="Subject"
+                       type="text"
+                       class="nx-field-input"
+                       placeholder="Mesaj konusu" />
+
+                <span asp-validation-for="Subject"
+                      class="nx-field-error">
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MESAJ İÇERİĞİ -->
+        <div class="nx-compose-editor">
+
+            <label asp-for="Body">
+                Mesaj İçeriği
+            </label>
+
+            <textarea asp-for="Body"
+                      class="nx-message-editor"
+                      placeholder="Mesajını buraya yazabilirsin..."
+                      rows="13"></textarea>
+
+            <span asp-validation-for="Body"
+                  class="nx-field-error">
+            </span>
+
+        </div>
+
+
+        <!-- ALT İŞLEM ÇUBUĞU -->
+        <div class="nx-compose-toolbar">
+
+            <div class="nx-toolbar-info">
+
+                <span class="nx-security-icon">✦</span>
+
+                Bu mesaj henüz gönderilmedi.
+
+            </div>
+
+
+            <div class="nx-toolbar-actions">
+
+                <!-- İPTAL -->
+                <a asp-controller="Message"
+                   asp-action="Drafts"
+                   class="nx-compose-cancel">
+
+                    İptal
+
+                </a>
+
+
+                <!-- DEĞİŞİKLİKLERİ KAYDET -->
+                <button type="submit"
+                        formnovalidate
+                        class="nx-compose-send">
+
+                    <span>Değişiklikleri Kaydet</span>
+                    <span aria-hidden="true">✓</span>
+
+                </button>
+
+                <!-- MESAJI GÖNDER -->
+                <button type="submit"
+                        formaction="@Url.Action("SendDraft", "Message", new { id = Model.Id })"
+                        formnovalidate
+                        class="nx-compose-send">
+
+                    Mesajı Gönder ➤
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </form>
+
+</section>

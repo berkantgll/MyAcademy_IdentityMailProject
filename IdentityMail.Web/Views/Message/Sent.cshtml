@@ -1,0 +1,200 @@
+﻿@model List<UserMessage>
+
+@{
+    ViewData["Title"] = "Gönderilenler";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nx-sent-page">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <header class="nx-sent-header">
+
+        <div>
+            <span class="nx-sent-eyebrow">
+                NEXORA MAIL
+            </span>
+
+            <h1>Gönderilenler</h1>
+
+            <p>
+                Gönderdiğin tüm mesajları buradan takip edebilirsin.
+            </p>
+        </div>
+
+        <div class="nx-sent-counter">
+            @Model.Count mesaj
+        </div>
+
+    </header>
+
+
+    <!-- LİSTE ÜST ALANI -->
+    <div class="nx-sent-list-header">
+
+        <div>
+            <h2>Gönderilen Mesajlar</h2>
+
+            <span>
+                Toplam @Model.Count mesaj
+            </span>
+        </div>
+
+        <div class="nx-sent-order">
+            ↓ En yeni önce
+        </div>
+
+    </div>
+
+
+    @if (Model.Count == 0)
+    {
+        <!-- BOŞ GÖNDERİLENLER -->
+        <div class="nx-sent-empty">
+
+            <div class="nx-sent-empty-icon">
+                ✉
+            </div>
+
+            <h3>Henüz mesaj göndermedin</h3>
+
+            <p>
+                Gönderdiğin mesajlar burada listelenecek.
+                İlk mesajını oluşturarak başlayabilirsin.
+            </p>
+
+            <a asp-controller="Message"
+               asp-action="SendMail"
+               class="nx-sent-compose-btn">
+
+                + Yeni Mesaj Oluştur
+
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- MESAJ LİSTESİ -->
+        <div class="nx-sent-list">
+
+            @foreach (var item in Model)
+            {
+                var firstName = item.Receiver?.FirstName ?? "";
+                var lastName = item.Receiver?.LastName ?? "";
+                var fullName = $"{firstName} {lastName}".Trim();
+
+                if (string.IsNullOrWhiteSpace(fullName))
+                {
+                    fullName = "Bilinmeyen alıcı";
+                }
+
+                var initials =
+                    (firstName.Length > 0 ? firstName[..1] : "") +
+                    (lastName.Length > 0 ? lastName[..1] : "");
+
+                if (string.IsNullOrWhiteSpace(initials))
+                {
+                    initials = "?";
+                }
+
+                <!-- MESAJ SATIRI -->
+                <div class="nx-sent-entry">
+
+                    <!-- MESAJ DETAY BAĞLANTISI -->
+                    <a asp-controller="Message"
+                       asp-action="SentDetail"
+                       asp-route-id="@item.Id"
+                       class="nx-sent-row nx-sent-row-link">
+
+                        <!-- ALICI AVATAR -->
+                        <div class="nx-sent-avatar">
+                            @initials.ToUpperInvariant()
+                        </div>
+
+
+                        <!-- ALICI BİLGİLERİ -->
+                        <div class="nx-sent-recipient">
+
+                            <strong>
+                                @fullName
+                            </strong>
+
+                            <span>
+                                @item.Receiver?.Email
+                            </span>
+
+                        </div>
+
+
+                        <!-- MESAJ BİLGİLERİ -->
+                        <div class="nx-sent-message">
+
+                            <div class="nx-sent-subject">
+                                @item.Subject
+                            </div>
+
+                            <p class="nx-sent-preview">
+                                @item.Body
+                            </p>
+
+                        </div>
+
+
+                        <!-- OKUNMA DURUMU -->
+                        @if (item.IsRead)
+                        {
+                            <span class="nx-sent-read is-read">
+                                ✓ Okundu
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="nx-sent-read is-waiting">
+                                ◷ Okunmadı
+                            </span>
+                        }
+
+
+                        <!-- TARİH -->
+                        <time class="nx-sent-date"
+                              datetime="@item.SendDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+                            @item.SendDate.ToString("dd.MM.yyyy")
+
+                            <small>
+                                @item.SendDate.ToString("HH:mm")
+                            </small>
+
+                        </time>
+
+                    </a>
+
+
+                    <!-- ÇÖP KUTUSUNA TAŞI -->
+                    <form asp-controller="Message"
+                          asp-action="MoveToTrash"
+                          asp-route-id="@item.Id"
+                          asp-route-fromSent="true"
+                          asp-antiforgery="true"
+                          method="post"
+                          class="inbox-trash-form nx-sent-trash-form">
+
+                        <button type="submit"
+                                class="inbox-trash-button"
+                                title="Çöp kutusuna taşı"
+                                aria-label="Mesajı çöp kutusuna taşı">
+
+                            <span aria-hidden="true">🗑</span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</section>

@@ -1,0 +1,307 @@
+﻿@model List<UserMessage>
+@using IdentityMail.Web.Entities
+
+@{
+    ViewData["Title"] = "Gelen Kutusu";
+    Layout = "_NexoraLayout";
+
+    var categories = ViewBag.Categories as List<MailCategory>
+                 ?? new List<MailCategory>();
+    var unreadCount = Model.Count(x => !x.IsRead);
+}
+
+<section class="nexora-inbox">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="inbox-heading">
+        <div>
+            <span class="inbox-eyebrow">NEXORA MAIL</span>
+
+            <h1>Gelen Kutusu</h1>
+
+            <p>
+                Merhaba, @ViewBag.fullName 👋
+                Mesajlarını buradan yönetebilirsin.
+            </p>
+        </div>
+
+        <div class="inbox-summary">
+            <span class="unread-indicator"></span>
+            @unreadCount okunmamış
+        </div>
+    </div>
+
+    <div class="inbox-panel">
+
+        <div class="inbox-panel-header">
+            <h2>Mesajların</h2>
+            <span>@Model.Count mesaj</span>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="inbox-empty">
+                <div class="empty-icon">✉</div>
+
+                <h3>Gelen kutun tertemiz!</h3>
+
+                <p>
+                    Henüz sana gönderilmiş bir mesaj bulunmuyor.
+                </p>
+
+                <a asp-controller="Message"
+                   asp-action="SendMail"
+                   class="empty-compose-btn">
+                    + Yeni Mesaj Oluştur
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="nx-inbox-list">
+
+                @foreach (var item in Model)
+                {
+                    var firstName = item.Sender?.FirstName ?? "";
+                    var lastName = item.Sender?.LastName ?? "";
+
+                    var fullName = $"{firstName} {lastName}".Trim();
+
+                    if (string.IsNullOrWhiteSpace(fullName))
+                    {
+                        fullName = "Bilinmeyen gönderici";
+                    }
+
+                    var initials =
+                        (firstName.Length > 0 ? firstName[..1] : "") +
+                        (lastName.Length > 0 ? lastName[..1] : "");
+
+                    if (string.IsNullOrWhiteSpace(initials))
+                    {
+                        initials = "?";
+                    }
+
+                    <!-- MESAJ SATIRI -->
+                    <div class="nx-inbox-entry @(item.IsRead ? "" : "is-unread")">
+
+                        <!-- YILDIZLAMA -->
+                        <form asp-controller="Message"
+                              asp-action="ToggleStar"
+                              asp-route-id="@item.Id"
+                              asp-antiforgery="true"
+                              method="post"
+                              class="inbox-star-form">
+
+                            <button type="submit"
+                                    class="inbox-star-button @(item.IsStarred ? "is-starred" : "")"
+                                    aria-label="@(item.IsStarred ? "Yıldızı kaldır" : "Yıldızla")">
+
+                                @(item.IsStarred ? "★" : "☆")
+
+                            </button>
+                        </form>
+
+                        <!-- MESAJ DETAY BAĞLANTISI -->
+                        <a asp-controller="Message"
+                           asp-action="MailDetail"
+                           asp-route-id="@item.Id"
+                           class="nx-inbox-main">
+
+                            <!-- GÖNDEREN AVATAR -->
+                            <div class="nx-inbox-avatar">
+                                @initials.ToUpperInvariant()
+                            </div>
+
+                            <!-- MESAJ BİLGİLERİ -->
+                            <div class="nx-inbox-copy">
+
+                                <strong class="nx-inbox-sender">
+                                    @fullName
+                                </strong>
+
+                                <div class="nx-inbox-subject">
+                                    @item.Subject
+                                </div>
+
+                                <p class="nx-inbox-preview">
+                                    @item.Body
+                                </p>
+
+                            </div>
+
+                            <!-- TARİH -->
+                            <div class="nx-inbox-meta">
+
+                                <time>
+                                    @item.SendDate.ToString("dd.MM.yyyy HH:mm")
+                                </time>
+
+                                @if (!item.IsRead)
+                                {
+                                    <span class="nx-inbox-unread-dot"></span>
+                                }
+
+                            </div>
+
+                        </a>
+
+                        <!-- ÜÇ NOKTA MENÜSÜ -->
+                        <!-- ÜÇ NOKTA MENÜSÜ -->
+                        <details class="nx-message-menu"
+                                 onmouseleave="this.open = false">
+
+                            <summary class="nx-menu-trigger"
+                                     title="Mesaj işlemleri"
+                                     aria-label="Mesaj işlemleri">
+
+                                <svg width="20" height="20"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     aria-hidden="true">
+
+                                    <circle cx="12" cy="5" r="1" />
+                                    <circle cx="12" cy="12" r="1" />
+                                    <circle cx="12" cy="19" r="1" />
+                                </svg>
+
+                            </summary>
+
+                            <div class="nx-message-dropdown">
+
+                                <!-- MESAJI AÇ -->
+                                <a asp-controller="Message"
+                                   asp-action="MailDetail"
+                                   asp-route-id="@item.Id">
+
+                                    ↗ Mesajı Aç
+
+                                </a>
+
+                                <!-- YANITLA -->
+                                <a asp-controller="Message"
+                                   asp-action="Reply"
+                                   asp-route-id="@item.Id">
+
+                                    ↩ Yanıtla
+
+                                </a>
+
+                                <!-- OKUNMADI İŞARETLE -->
+                                @if (item.IsRead)
+                                {
+                                    <form asp-controller="Message"
+                                          asp-action="MarkAsUnread"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          asp-antiforgery="true">
+
+                                        <button type="submit">
+                                            ✉ Okunmadı İşaretle
+                                        </button>
+
+                                    </form>
+                                }
+
+                                <div class="nx-menu-divider"></div>
+
+                                <!-- KATEGORİYE EKLE -->
+                                <div class="nx-menu-category-heading">
+                                    Kategoriye Ekle
+                                </div>
+
+                                <div class="nx-menu-category-list">
+
+                                    @if (categories.Count == 0)
+                                    {
+                                        <a asp-controller="Category"
+                                           asp-action="Index">
+
+                                            + Kategori Oluştur
+
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var category in categories)
+                                        {
+                                            <form asp-controller="Category"
+                                                  asp-action="Assign"
+                                                  method="post"
+                                                  asp-antiforgery="true">
+
+                                                <input type="hidden"
+                                                       name="messageId"
+                                                       value="@item.Id" />
+
+                                                <input type="hidden"
+                                                       name="categoryId"
+                                                       value="@category.Id" />
+
+                                                <button type="submit">
+
+                                                    <span class="nx-menu-category-dot"
+                                                          style="background-color: @category.Color">
+                                                    </span>
+
+                                                    @category.Name
+
+                                                </button>
+
+                                            </form>
+                                        }
+                                    }
+
+                                </div>
+
+                                <div class="nx-menu-divider"></div>
+
+                                <!-- ÇÖPE TAŞI -->
+                                <form asp-controller="Message"
+                                      asp-action="MoveToTrash"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      asp-antiforgery="true">
+
+                                    <button type="submit"
+                                            class="nx-menu-danger">
+
+                                        <svg width="16" height="16"
+                                             viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             aria-hidden="true">
+
+                                            <path d="M3 6h18" />
+                                            <path d="M8 6V4h8v2" />
+                                            <path d="M19 6l-1 14H6L5 6" />
+                                            <path d="M10 10v7" />
+                                            <path d="M14 10v7" />
+
+                                        </svg>
+
+                                        Çöpe Taşı
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </details>
+
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

@@ -1,0 +1,119 @@
+﻿@model UserMessage
+
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nx-detail">
+
+    <!-- ÜST ARAÇ ÇUBUĞU -->
+
+    <div class="nx-detail-toolbar">
+
+        <a asp-controller="Message"
+               asp-action="Index"
+               class="nx-detail-back">
+
+            <span aria-hidden="true">←</span>
+            Gelen Kutusu
+
+        </a>
+
+        <div class="nx-detail-status">
+            <span class="nx-status-dot"></span>
+            Okundu
+        </div>
+
+    </div>
+
+
+    <!-- MESAJ BAŞLIĞI -->
+
+    <div class="nx-detail-heading">
+
+        <span class="nx-detail-eyebrow">
+            NEXORA MAIL / GELEN MESAJ
+        </span>
+
+        <h1>@Model.Subject</h1>
+
+    </div>
+
+
+    <!-- GÖNDEREN BİLGİLERİ -->
+
+    <div class="nx-detail-sender">
+
+        <div class="nx-sender-avatar">
+            ✉
+        </div>
+
+        <div class="nx-sender-information">
+
+            <h2>
+                @Model.Sender.FirstName
+                @Model.Sender.LastName
+            </h2>
+
+            <p>
+                @Model.Sender.Email
+            </p>
+
+            <span>Alıcı: Ben</span>
+
+        </div>
+
+        <time class="nx-detail-date"
+              datetime="@Model.SendDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+            @Model.SendDate.ToString("dd.MM.yyyy HH:mm")
+
+        </time>
+
+    </div>
+
+
+    <!-- MESAJ İÇERİĞİ -->
+
+    <article class="nx-detail-body">@Model.Body</article>
+
+
+    <!-- ALT İŞLEMLER -->
+
+    <div class="nx-detail-footer">
+
+        <div class="nx-detail-footer-info">
+            ✦ Nexora üzerinden alınan mesaj
+        </div>
+
+        <div class="nx-detail-actions">
+
+            <!-- GELEN KUTUSUNA DÖN -->
+
+            <a asp-controller="Message"
+                   asp-action="Index"
+                   class="nx-detail-return">
+
+                ← Gelen Kutusuna Dön
+
+            </a>
+
+
+            <!-- YANITLA -->
+
+            <a asp-controller="Message"
+                   asp-action="Reply"
+                   asp-route-id="@Model.Id"
+                   class="nx-compose-send nx-reply-button">
+
+                <span aria-hidden="true">↩</span>
+                Yanıtla
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>

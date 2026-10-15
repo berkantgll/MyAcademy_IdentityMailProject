@@ -1,0 +1,86 @@
+﻿@{
+    var currentAction = ViewContext.RouteData
+        .Values["action"]?.ToString();
+}
+
+<aside class="nexora-sidebar">
+
+    <div class="sidebar-header">
+
+        <a href="@Url.Action("SendMail", "Message")"
+               class="sidebar-compose">
+            Yeni Mesaj
+        </a>
+
+    </div>
+
+    <nav class="sidebar-menu">
+
+        <!-- GELEN KUTUSU -->
+
+        <a asp-controller="Message"
+           asp-action="Index"
+           class="sidebar-link @(
+           ViewContext.RouteData.Values["controller"]?.ToString() == "Message" &&
+           ViewContext.RouteData.Values["action"]?.ToString() == "Index"
+           ? "active" : "")">
+
+            Gelen Kutusu
+
+        </a>
+
+
+        <!-- GÖNDERİLENLER -->
+        <a href="@Url.Action("Sent", "Message")"
+               class="sidebar-link @(currentAction == "Sent" ? "active" : "")">
+
+            Gönderilenler
+
+        </a>
+
+        <!-- TASLAKLAR -->
+
+        <a asp-controller="Message"
+           asp-action="Drafts"
+           class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Drafts" ? "active" : "")">
+
+            Taslaklar
+
+        </a>
+
+
+        <!-- YILDIZLI MESAJLAR -->
+        <a href="@Url.Action("Starred", "Message")"
+               class="sidebar-link @(currentAction == "Starred" ? "active" : "")">
+
+            Yıldızlı Mesajlar
+
+        </a>
+
+        <!-- ÇÖP KUTUSU -->
+
+        <a asp-controller="Message"
+           asp-action="Trash"
+           class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Trash" ? "active" : "")">
+
+            Çöp Kutusu
+
+        </a>
+
+
+        <!-- KATEGORİLER -->
+        <a asp-controller="Category"
+           asp-action="Index"
+           class="sidebar-link @(
+           ViewContext.RouteData.Values["controller"]?.ToString() == "Category"
+           ? "active" : "")">
+
+            Kategoriler
+
+        </a>
+
+
+
+    </nav>
+
+</aside>

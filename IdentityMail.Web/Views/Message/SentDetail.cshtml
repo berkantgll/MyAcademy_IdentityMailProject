@@ -1,0 +1,154 @@
+﻿@model UserMessage
+
+@{
+    ViewData["Title"] = "Gönderilen Mesaj Detayı";
+    Layout = "_NexoraLayout";
+
+    var firstName = Model.Receiver?.FirstName ?? "";
+    var lastName = Model.Receiver?.LastName ?? "";
+
+    var fullName = $"{firstName} {lastName}".Trim();
+
+    if (string.IsNullOrWhiteSpace(fullName))
+    {
+        fullName = "Bilinmeyen alıcı";
+    }
+
+    var initials =
+        (firstName.Length > 0 ? firstName[..1] : "") +
+        (lastName.Length > 0 ? lastName[..1] : "");
+
+    if (string.IsNullOrWhiteSpace(initials))
+    {
+        initials = "?";
+    }
+}
+
+<section class="nx-detail">
+
+    <!-- ÜST ARAÇ ÇUBUĞU -->
+
+    <div class="nx-detail-toolbar">
+
+        <a asp-controller="Message"
+               asp-action="Sent"
+               class="nx-detail-back">
+
+            <span aria-hidden="true">←</span>
+            Gönderilenler
+
+        </a>
+
+
+        <!-- OKUNMA DURUMU -->
+        @if (Model.IsRead)
+        {
+            <div class="nx-detail-status">
+
+                <span class="nx-status-dot"></span>
+
+                Okundu
+
+            </div>
+        }
+        else
+        {
+            <div class="nx-detail-status nx-status-unread">
+
+                <span class="nx-status-dot"></span>
+
+                Henüz Okunmadı
+
+            </div>
+        }
+
+    </div>
+
+
+    <!-- MESAJ BAŞLIĞI -->
+
+    <div class="nx-detail-heading">
+
+        <span class="nx-detail-eyebrow">
+            NEXORA MAIL / GÖNDERİLEN MESAJ
+        </span>
+
+        <h1>@Model.Subject</h1>
+
+    </div>
+
+
+    <!-- ALICI BİLGİLERİ -->
+
+    <div class="nx-detail-sender">
+
+        <!-- PROFİL AVATARI -->
+
+        <div class="nx-sender-avatar">
+
+            @initials.ToUpperInvariant()
+
+        </div>
+
+
+        <!-- ALICI ADI VE EMAIL -->
+
+        <div class="nx-sender-information">
+
+            <span class="nx-sent-detail-label">
+                ALICI
+            </span>
+
+            <h2>
+                @fullName
+            </h2>
+
+            <p>
+                @Model.Receiver?.Email
+            </p>
+
+            <span>
+                Nexora kullanıcısı
+            </span>
+
+        </div>
+
+
+        <!-- GÖNDERİM TARİHİ -->
+
+        <time class="nx-detail-date"
+              datetime="@Model.SendDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+            @Model.SendDate.ToString("dd.MM.yyyy HH:mm")
+
+        </time>
+
+    </div>
+
+
+    <!-- MESAJ İÇERİĞİ -->
+
+    <article class="nx-detail-body">@Model.Body</article>
+
+
+    <!-- ALT İŞLEMLER -->
+
+    <div class="nx-detail-footer">
+
+        <div class="nx-detail-footer-info">
+
+            ✦ Nexora üzerinden gönderilen mesaj
+
+        </div>
+
+        <a asp-controller="Message"
+               asp-action="Sent"
+               class="nx-detail-return">
+
+            ← Gönderilenlere Dön
+
+        </a>
+
+    </div>
+
+</section>

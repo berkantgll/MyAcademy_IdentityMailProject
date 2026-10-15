@@ -1,0 +1,368 @@
+﻿@using IdentityMail.Web.Entities
+@model AppUser
+
+@{
+    ViewData["Title"] = "Kullanıcı Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var firstName = Model.FirstName ?? "";
+    var lastName = Model.LastName ?? "";
+
+    var fullName = $"{firstName} {lastName}".Trim();
+
+    if (string.IsNullOrWhiteSpace(fullName))
+    {
+        fullName = "İsimsiz Kullanıcı";
+    }
+
+    var initials =
+        (firstName.Length > 0 ? firstName[..1] : "") +
+        (lastName.Length > 0 ? lastName[..1] : "");
+
+    if (string.IsNullOrWhiteSpace(initials))
+    {
+        initials = "?";
+    }
+
+    string roleName = ViewBag.UserRole as string
+                      ?? "Standart Kullanıcı";
+}
+
+<section class="nx-user-details-page">
+
+    <!-- GERİ DÖN -->
+    <a asp-area="Admin"
+       asp-controller="Users"
+       asp-action="Index"
+       class="nx-ud-back">
+
+        ← Kullanıcı Listesine Dön
+
+    </a>
+
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="nx-ud-header">
+
+        <div>
+            <span class="nx-ud-eyebrow">
+                NEXORA / ADMIN PANEL
+            </span>
+
+            <h1>Kullanıcı Detayı</h1>
+
+            <p>
+                Kullanıcı hesabını ve sistem istatistiklerini incele.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- KULLANICI PROFİLİ -->
+    <div class="nx-ud-profile">
+
+        <div class="nx-ud-avatar">
+            @initials.ToUpperInvariant()
+        </div>
+
+        <div class="nx-ud-profile-info">
+
+            <h2>@fullName</h2>
+
+            <p>@Model.Email</p>
+
+            <span class="nx-ud-role">
+                @roleName
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- HESAP BİLGİLERİ -->
+    <div class="nx-ud-panel">
+
+        <h2>Hesap Bilgileri</h2>
+
+        <div class="nx-ud-information">
+
+            <div>
+                <span>Ad Soyad</span>
+                <strong>@fullName</strong>
+            </div>
+
+            <div>
+                <span>Kullanıcı Adı</span>
+                <strong>@Model.UserName</strong>
+            </div>
+
+            <div>
+                <span>E-posta Adresi</span>
+                <strong>@Model.Email</strong>
+            </div>
+
+            <div>
+                <span>Kullanıcı ID</span>
+                <strong>#@Model.Id</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MESAJLAŞMA İSTATİSTİKLERİ -->
+    <div class="nx-ud-panel">
+
+        <h2>Mesajlaşma İstatistikleri</h2>
+
+        <div class="nx-ud-stats">
+
+            <!-- GÖNDERİLEN -->
+            <div class="nx-ud-stat">
+
+                <span>Gönderilen Mesaj</span>
+
+                <strong>@ViewBag.SentCount</strong>
+
+                <small>Toplam gönderilen</small>
+
+            </div>
+
+
+            <!-- GELEN -->
+            <div class="nx-ud-stat">
+
+                <span>Gelen Mesaj</span>
+
+                <strong>@ViewBag.ReceivedCount</strong>
+
+                <small>Toplam alınan</small>
+
+            </div>
+
+
+            <!-- TASLAKLAR -->
+            <div class="nx-ud-stat">
+
+                <span>Taslaklar</span>
+
+                <strong>@ViewBag.DraftCount</strong>
+
+                <small>Kaydedilmiş taslak</small>
+
+            </div>
+
+
+            <!-- KATEGORİLER -->
+            <div class="nx-ud-stat">
+
+                <span>Kategoriler</span>
+
+                <strong>@ViewBag.CategoryCount</strong>
+
+                <small>Oluşturulmuş kategori</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+    .nx-user-details-page {
+        max-width: 1350px;
+        margin: 0 auto;
+        padding: 32px;
+    }
+
+    .nx-ud-back {
+        display: inline-block;
+        margin-bottom: 28px;
+        color: #a78bfa;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .nx-ud-back:hover {
+            color: #c4b5fd;
+        }
+
+    .nx-ud-header {
+        margin-bottom: 26px;
+    }
+
+    .nx-ud-eyebrow {
+        display: block;
+        margin-bottom: 10px;
+        color: #a78bfa;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+    }
+
+    .nx-ud-header h1 {
+        margin: 0;
+        color: #f5f5f5;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .nx-ud-header p {
+        margin: 10px 0 0;
+        color: #a1a1aa;
+        font-size: 13px;
+    }
+
+    /* KULLANICI PROFİLİ */
+    .nx-ud-profile {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 28px;
+        margin-bottom: 22px;
+        background: #1a1a20;
+        border: 1px solid #303039;
+        border-radius: 14px;
+    }
+
+    .nx-ud-avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 70px;
+        flex-shrink: 0;
+        background: #302c50;
+        border-radius: 50%;
+        color: #c4b5fd;
+        font-size: 23px;
+        font-weight: 800;
+    }
+
+    .nx-ud-profile-info h2 {
+        margin: 0 0 7px;
+        color: #f5f5f5;
+        font-size: 22px;
+    }
+
+    .nx-ud-profile-info p {
+        margin: 0 0 12px;
+        color: #a1a1aa;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .nx-ud-role {
+        display: inline-block;
+        padding: 7px 12px;
+        background: #302547;
+        color: #c4b5fd;
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* PANELLER */
+    .nx-ud-panel {
+        padding: 25px;
+        margin-bottom: 22px;
+        background: #1a1a20;
+        border: 1px solid #303039;
+        border-radius: 14px;
+    }
+
+        .nx-ud-panel h2 {
+            margin: 0 0 23px;
+            color: #f5f5f5;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+    /* HESAP BİLGİLERİ */
+    .nx-ud-information {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+        .nx-ud-information > div {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nx-ud-information span {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .nx-ud-information strong {
+            color: #f5f5f5;
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+    /* İSTATİSTİK KARTLARI */
+    .nx-ud-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .nx-ud-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 22px;
+        background: #222229;
+        border: 1px solid #353540;
+        border-radius: 11px;
+    }
+
+        .nx-ud-stat span {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .nx-ud-stat strong {
+            color: #f5f5f5;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .nx-ud-stat small {
+            color: #a78bfa;
+            font-size: 11px;
+        }
+
+    /* RESPONSIVE */
+    @@media (max-width: 1000px) {
+        .nx-ud-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 650px) {
+        .nx-user-details-page {
+            padding: 16px;
+        }
+
+        .nx-ud-profile {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .nx-ud-information,
+        .nx-ud-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

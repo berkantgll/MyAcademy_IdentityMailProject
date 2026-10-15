@@ -1,0 +1,153 @@
+﻿@using IdentityMail.Web.Entities
+@model List<DraftMessage>
+
+@{
+    ViewData["Title"] = "Taslaklar";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nexora-inbox">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="inbox-heading">
+
+        <div>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL / TASLAKLAR
+            </span>
+
+            <h1>Taslaklar</h1>
+
+            <p>
+                Kaydettiğin taslak mesajları buradan
+                görüntüleyebilirsin.
+            </p>
+        </div>
+
+        <!-- TASLAK SAYISI -->
+        <div class="inbox-summary">
+            @Model.Count taslak
+        </div>
+
+    </div>
+
+
+    <!-- TASLAKLAR PANELİ -->
+    <div class="inbox-panel">
+
+        <div class="inbox-panel-header">
+
+            <h2>Taslak Mesajların</h2>
+
+            <span>@Model.Count mesaj</span>
+
+        </div>
+
+
+        <!-- TASLAK YOKSA -->
+        @if (Model.Count == 0)
+        {
+            <div class="inbox-empty">
+
+                <h3>Henüz taslağın bulunmuyor!</h3>
+
+                <p>
+                    Yazmaya başladığın mesajları taslak
+                    olarak kaydedebilirsin.
+
+                    Kaydettiğin taslaklar burada
+                    listelenecek.
+                </p>
+
+                <a asp-controller="Message"
+                   asp-action="SendMail"
+                   class="empty-compose-btn">
+
+                    + Yeni Mesaj Oluştur
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <!-- TASLAK LİSTESİ -->
+            <div class="inbox-message-list">
+
+                @foreach (var item in Model)
+                {
+                    var receiver = string.IsNullOrWhiteSpace(item.ReceiverMail)
+                        ? "Alıcı belirtilmedi"
+                        : item.ReceiverMail;
+
+                    var subject = string.IsNullOrWhiteSpace(item.Subject)
+                        ? "Başlıksız Taslak"
+                        : item.Subject;
+
+                    var preview = string.IsNullOrWhiteSpace(item.Body)
+                        ? "Henüz mesaj içeriği yazılmadı."
+                        : item.Body;
+
+                    var localDate = DateTime
+                        .SpecifyKind(item.UpdatedAt, DateTimeKind.Utc)
+                        .ToLocalTime();
+
+
+                    <!-- TASLAK SATIRI -->
+                    <div class="inbox-message">
+
+                        <!-- TASLAK AVATARI -->
+                        <div class="message-avatar">
+                            T
+                        </div>
+
+
+                        <!-- TASLAK BİLGİLERİ -->
+                        <div class="message-content">
+
+                            <div class="message-top">
+
+                                <strong>
+                                    @receiver
+                                </strong>
+
+                                <span class="message-date">
+                                    @localDate.ToString("dd.MM.yyyy HH:mm")
+                                </span>
+
+                            </div>
+
+
+                            <!-- MESAJ KONUSU -->
+                            <div class="message-subject">
+                                @subject
+                            </div>
+
+
+                            <!-- MESAJ ÖNİZLEMESİ -->
+                            <p class="message-preview">
+                                @preview
+                            </p>
+
+
+                            <!-- TASLAĞI DÜZENLE -->
+                            <a asp-controller="Message"
+                               asp-action="EditDraft"
+                               asp-route-id="@item.Id"
+                               class="nx-draft-edit">
+
+                                Taslağı Düzenle →
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

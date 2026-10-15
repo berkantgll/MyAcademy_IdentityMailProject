@@ -1,0 +1,190 @@
+﻿
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Nexora</title>
+
+    <!-- KAYITLI TEMA AYARI -->
+    <script>
+            (function () {
+                try {
+                    const savedTheme =
+                        localStorage.getItem("nexora-theme");
+
+                    document.documentElement.dataset.theme =
+                        savedTheme === "dark" ? "dark" : "light";
+
+                 } catch {
+                document.documentElement.dataset.theme = "light";
+                }
+            })();
+    </script>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+          rel="stylesheet" />
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- NEXORA CSS -->
+    <link rel="stylesheet"
+          href="~/css/nexora-mail.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <!-- ÜST MENÜ -->
+    <header class="nexora-topbar">
+
+        <!-- NEXORA LOGO -->
+        <a asp-area=""
+           asp-controller="Message"
+           asp-action="Index"
+           class="nexora-brand">
+
+            <span class="nexora-brand-icon">
+                ✉
+            </span>
+
+            <span>
+                Nex<span class="nexora-accent">ora.</span>
+            </span>
+
+        </a>
+
+
+        <!-- SAĞ ÜST İŞLEMLER -->
+        <div class="nexora-header-actions">
+
+            <!-- TEMA ANAHTARI -->
+            <div class="nexora-theme-control">
+
+                <span id="themeSymbol"
+                      class="nexora-theme-symbol"
+                      aria-hidden="true">
+                    ☀
+                </span>
+
+                <button type="button"
+                        id="themeToggle"
+                        class="nexora-theme-toggle"
+                        role="switch"
+                        aria-checked="false"
+                        aria-label="Karanlık moda geç">
+
+                    <span class="nexora-toggle-thumb"></span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ÇIKIŞ YAP - POST -->
+            <form asp-area=""
+                  asp-controller="Auth"
+                  asp-action="Logout"
+                  asp-antiforgery="true"
+                  method="post"
+                  class="nexora-logout-form">
+
+                <button type="submit"
+                        class="nexora-logout">
+
+                    Çıkış Yap
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </header>
+
+
+    <!-- ANA UYGULAMA ALANI -->
+    <div class="nexora-workspace">
+
+        <!-- NORMAL KULLANICI SIDEBAR -->
+        <partial name="_NexoraSidebar" />
+
+        <!-- SAYFA İÇERİĞİ -->
+        <main class="nexora-content">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+
+    <!-- BOOTSTRAP -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- TEMA DEĞİŞTİRME -->
+    <script>
+                (function () {
+
+               const toggle = document.getElementById("themeToggle");
+            const symbol = document.getElementById("themeSymbol");
+                    const root = document.documentElement;
+
+                    function updateThemeControl() {
+
+                        const isDark = root.dataset.theme === "dark";
+
+                    toggle.setAttribute(
+                     "aria-checked",
+                String(isDark)
+                        );
+
+                    toggle.setAttribute(
+                       "aria-label",
+                            isDark
+                        ? "Aydınlık moda geç"
+                    : "Karanlık moda geç"
+                        );
+
+            symbol.textContent = isDark ? "☾" : "☀";
+                    }
+
+                    updateThemeControl();
+
+                    toggle.addEventListener("click", function () {
+
+                        const isDark = root.dataset.theme === "dark";
+
+                        const newTheme = isDark ? "light" : "dark";
+
+                        root.dataset.theme = newTheme;
+
+                        try {
+                        localStorage.setItem(
+                            "nexora-theme",
+                    newTheme
+                );
+                    } catch {
+                // Depolama kapalıysa tema yine değişir.
+                        }
+
+                        updateThemeControl();
+
+                    });
+
+            })();
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

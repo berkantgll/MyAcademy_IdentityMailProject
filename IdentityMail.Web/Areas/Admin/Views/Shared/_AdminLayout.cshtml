@@ -1,0 +1,165 @@
+﻿@{
+    var pageTitle = ViewData["Title"] ?? "Admin";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Nexora Admin</title>
+
+    <link rel="stylesheet"
+          href="@Url.Content("~/css/nexora-mail.css")" />
+
+    <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: #101014;
+                color: #f5f5f5;
+                font-family: Arial, sans-serif;
+            }
+
+            .nx-admin-topbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                padding: 18px 35px;
+                background: #17171c;
+                border-bottom: 1px solid #303039;
+            }
+
+            .nx-admin-brand {
+                color: #ffffff;
+                font-size: 22px;
+                font-weight: 800;
+                text-decoration: none;
+            }
+
+                .nx-admin-brand span {
+                    color: #8b5cf6;
+                }
+
+            .nx-admin-navigation {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+                .nx-admin-navigation a {
+                    color: #a1a1aa;
+                    font-size: 13px;
+                    text-decoration: none;
+                }
+
+                    .nx-admin-navigation a:hover {
+                        color: #a78bfa;
+                    }
+
+            .nx-admin-logout {
+                margin: 0;
+            }
+
+                .nx-admin-logout button {
+                    padding: 10px 16px;
+                    background: #27213c;
+                    border: 1px solid #44365f;
+                    border-radius: 9px;
+                    color: #c4b5fd;
+                    font-size: 13px;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+
+                    .nx-admin-logout button:hover {
+                        background: #382d56;
+                    }
+
+            .nx-admin-content {
+                width: 100%;
+                min-height: calc(100vh - 80px);
+            }
+
+            @@media (max-width: 700px) {
+                .nx-admin-topbar {
+                    padding: 16px;
+                }
+
+                .nx-admin-navigation {
+                    flex-wrap: wrap;
+                    gap: 12px;
+                }
+            }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ADMIN ÜST MENÜ -->
+    <header class="nx-admin-topbar">
+
+        <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"
+           class="nx-admin-brand">
+
+            Nexora<span>.</span> Admin
+
+        </a>
+
+        <nav class="nx-admin-navigation">
+
+            <!-- DASHBOARD -->
+            <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })">
+                Dashboard
+            </a>
+
+            
+            <!-- KULLANICI YÖNETİMİ -->
+            <a href="@Url.Action("Index", "Users", new { area = "Admin" })">
+                Kullanıcılar
+            </a>
+
+
+            <!-- KULLANICI PANELİ -->
+            <a href="@Url.Action("Index", "Message", new { area = "" })">
+                Kullanıcı Paneli
+            </a>
+
+            <!-- ÇIKIŞ -->
+            <form action="@Url.Action("Logout", "Auth", new { area = "" })"
+                  method="post"
+                  class="nx-admin-logout">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit">
+                    Çıkış Yap
+                </button>
+
+            </form>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ADMIN SAYFA İÇERİĞİ -->
+    <main class="nx-admin-content">
+
+        @RenderBody()
+
+    </main>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

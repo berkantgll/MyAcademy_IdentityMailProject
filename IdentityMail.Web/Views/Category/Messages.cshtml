@@ -1,0 +1,304 @@
+﻿@using IdentityMail.Web.Entities
+@model List<UserMessage>
+
+@{
+    ViewData["Title"] = "Kategori Mesajları";
+    Layout = "_NexoraLayout";
+
+    string categoryName = ViewBag.CategoryName;
+    string categoryColor = ViewBag.CategoryColor;
+
+    int categoryId = ViewBag.CategoryId;
+    int currentUserId = ViewBag.CurrentUserId;
+}
+
+<section class="nexora-inbox nx-category-messages-page">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="inbox-heading">
+
+        <div>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL / KATEGORİLER
+            </span>
+
+            <h1>
+                <span class="nx-category-message-dot"
+                      style="background-color: @categoryColor">
+                </span>
+
+                @categoryName
+            </h1>
+
+            <p>
+                Bu kategoriye eklediğin mesajlar.
+            </p>
+        </div>
+
+        <div class="inbox-summary">
+            @Model.Count mesaj
+        </div>
+
+    </div>
+
+    <!-- GERİ DÖN -->
+    <a asp-controller="Category"
+       asp-action="Index"
+       class="nx-category-back">
+        ← Kategorilere Dön
+    </a>
+
+    <!-- MESAJ PANELİ -->
+    <div class="inbox-panel">
+
+        <div class="inbox-panel-header">
+            <h2>Kategori Mesajları</h2>
+            <span>@Model.Count mesaj</span>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <!-- BOŞ KATEGORİ -->
+            <div class="inbox-empty">
+
+                <h3>Bu kategori henüz boş!</h3>
+
+                <p>
+                    Mesajlarını kategorilere eklediğinde
+                    burada görüntüleyebileceksin.
+                </p>
+
+                <a asp-controller="Message"
+                   asp-action="Index"
+                   class="empty-compose-btn">
+
+                    Gelen Kutusuna Git →
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="nx-category-message-list">
+
+                @foreach (var item in Model)
+                {
+                    bool isSent = item.SenderId == currentUserId;
+
+                    var person = isSent
+                        ? item.Receiver
+                        : item.Sender;
+
+                    var fullName =
+                        $"{person?.FirstName} {person?.LastName}".Trim();
+
+                    if (string.IsNullOrWhiteSpace(fullName))
+                    {
+                        fullName = "Bilinmeyen kullanıcı";
+                    }
+
+                    <!-- MESAJ KARTI -->
+                    <article class="nx-category-message-item">
+
+                        <!-- MESAJ BİLGİLERİ -->
+                        <a asp-controller="Message"
+                           asp-action="@(isSent ? "SentDetail" : "MailDetail")"
+                           asp-route-id="@item.Id"
+                           class="nx-category-message-link">
+
+                            <div class="nx-category-message-top">
+
+                                <strong>@fullName</strong>
+
+                                <span class="nx-category-message-type">
+                                    @(isSent ? "Gönderilen" : "Gelen")
+                                </span>
+
+                            </div>
+
+                            <div class="nx-category-message-subject">
+                                @item.Subject
+                            </div>
+
+                            <p class="nx-category-message-preview">
+                                @item.Body
+                            </p>
+
+                            <time class="nx-category-message-date">
+                                @item.SendDate.ToString("dd.MM.yyyy HH:mm")
+                            </time>
+
+                        </a>
+
+                        <!-- KATEGORİDEN ÇIKAR -->
+                        <form asp-controller="Category"
+                              asp-action="Unassign"
+                              method="post"
+                              asp-antiforgery="true">
+
+                            <input type="hidden"
+                                   name="messageId"
+                                   value="@item.Id" />
+
+                            <input type="hidden"
+                                   name="categoryId"
+                                   value="@categoryId" />
+
+                            <button type="submit"
+                                    class="nx-category-remove-btn">
+
+                                Kategoriden Çıkar
+
+                            </button>
+
+                        </form>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<style>
+    .nx-category-messages-page .inbox-heading h1 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nx-category-message-dot {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .nx-category-back {
+        display: inline-block;
+        margin: 0 0 20px;
+        color: #8b5cf6;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .nx-category-message-list {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .nx-category-message-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .nx-category-message-link {
+        display: block;
+        flex: 1;
+        min-width: 0;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .nx-category-message-top {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+        .nx-category-message-top strong {
+            font-size: 14px;
+        }
+
+    .nx-category-message-type {
+        padding: 4px 8px;
+        background: #f0efff;
+        color: #635bff;
+        border-radius: 6px;
+        font-size: 11px;
+    }
+
+    .nx-category-message-subject {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .nx-category-message-preview {
+        margin: 0 0 8px;
+        color: #64748b;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nx-category-message-date {
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    .nx-category-remove-btn {
+        padding: 10px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 9px;
+        background: transparent;
+        color: #64748b;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+        .nx-category-remove-btn:hover {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fff1f2;
+        }
+
+    html[data-theme="dark"] .nx-category-message-item {
+        background: #171717;
+        border-color: #303030;
+    }
+
+    html[data-theme="dark"] .nx-category-message-link {
+        color: #f5f5f5;
+    }
+
+    html[data-theme="dark"] .nx-category-message-preview,
+    html[data-theme="dark"] .nx-category-message-date {
+        color: #a1a1aa;
+    }
+
+    html[data-theme="dark"] .nx-category-remove-btn {
+        color: #c4b5fd;
+        border-color: #40375f;
+    }
+
+    @@media (max-width: 650px) {
+        .nx-category-message-item {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+            .nx-category-message-item form {
+                width: 100%;
+            }
+    }
+</style>

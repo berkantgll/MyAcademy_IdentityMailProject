@@ -1,0 +1,160 @@
+﻿@model List<UserMessage>
+
+@{
+    ViewData["Title"] = "Yıldızlı Mesajlar";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nexora-inbox">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="inbox-heading">
+
+        <div>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL / YILDIZLI MESAJLAR
+            </span>
+
+            <h1>Yıldızlı Mesajlar ⭐</h1>
+
+            <p>
+                Önemli bulduğun mesajları burada
+                görüntüleyebilir ve yönetebilirsin.
+            </p>
+        </div>
+
+        <div class="inbox-summary">
+            <span class="unread-indicator"></span>
+            @Model.Count yıldızlı mesaj
+        </div>
+
+    </div>
+
+
+    <!-- YILDIZLI MESAJ LİSTESİ -->
+    <div class="inbox-panel">
+
+        <div class="inbox-panel-header">
+
+            <h2>Yıldızlı Mesajların</h2>
+
+            <span>@Model.Count mesaj</span>
+
+        </div>
+
+
+        @if (Model.Count == 0)
+        {
+            <!-- BOŞ DURUM -->
+            <div class="inbox-empty">
+
+                <div class="empty-icon">
+                    ☆
+                </div>
+
+                <h3>Henüz yıldızlı mesajın yok!</h3>
+
+                <p>
+                    Önemli bulduğun mesajları yıldızlayarak
+                    burada kolayca görüntüleyebilirsin.
+                </p>
+
+                <a asp-controller="Message"
+                       asp-action="Index"
+                       class="empty-compose-btn">
+
+                    ← Gelen Kutusuna Git
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <!-- YILDIZLI MESAJLAR -->
+            <div class="inbox-message-list">
+
+                @foreach (var item in Model)
+                {
+                    <div class="inbox-message-entry">
+
+                        <!-- YILDIZ KALDIRMA FORMU -->
+                       
+                        <form asp-controller="Message"
+                              asp-action="ToggleStar"
+                              asp-route-id="@item.Id"
+                              asp-antiforgery="true"
+                              method="post"
+                              class="inbox-star-form">
+
+                            <input type="hidden"
+                                   name="returnToStarred"
+                                   value="true" />
+
+                            <button type="submit"
+                                    class="inbox-star-button is-starred"
+                                    title="Yıldızı kaldır"
+                                    aria-label="Yıldızı kaldır">
+                                ★
+                            </button>
+
+                        </form>
+
+
+
+                        <!-- MESAJ DETAYINA GİT -->
+                        <a asp-controller="Message"
+                               asp-action="MailDetail"
+                               asp-route-id="@item.Id"
+                               class="inbox-message @(item.IsRead ? "" : "message-unread")">
+
+                            <!-- GÖNDEREN AVATARI -->
+                            <div class="message-avatar">
+                                ✉
+                            </div>
+
+
+                            <!-- MESAJ BİLGİLERİ -->
+                            <div class="message-content">
+
+                                <div class="message-top">
+
+                                    <strong>
+                                        @item.Sender.FirstName
+                                        @item.Sender.LastName
+                                    </strong>
+
+                                    <span class="message-date">
+                                        @item.SendDate.ToString("dd.MM.yyyy HH:mm")
+                                    </span>
+
+                                </div>
+
+                                <div class="message-subject">
+                                    @item.Subject
+                                </div>
+
+                                <p class="message-preview">
+                                    @item.Body
+                                </p>
+
+                            </div>
+
+
+                            <!-- OKUNMAMIŞ MESAJ İŞARETİ -->
+                            @if (!item.IsRead)
+                            {
+                                <span class="message-dot"></span>
+                            }
+
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

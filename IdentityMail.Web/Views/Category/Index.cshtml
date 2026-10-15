@@ -1,0 +1,275 @@
+﻿@using IdentityMail.Web.Entities
+@model List<MailCategory>
+
+@{
+    ViewData["Title"] = "Kategoriler";
+    Layout = "_NexoraLayout";
+}
+
+<section class="nexora-inbox nx-categories-page">
+
+    <!-- BAŞLIK -->
+    <div class="inbox-heading">
+        <div>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL / KATEGORİLER
+            </span>
+
+            <h1>Kategoriler</h1>
+
+            <p>
+                Mesajlarını kategorilere ayırarak düzenle.
+            </p>
+        </div>
+
+        <div class="inbox-summary">
+            @Model.Count kategori
+        </div>
+    </div>
+
+    <!-- HATA MESAJI -->
+    @if (TempData["CategoryError"] != null)
+    {
+        <div class="nx-category-error">
+            @TempData["CategoryError"]
+        </div>
+    }
+
+    <!-- KATEGORİ OLUŞTUR -->
+    <div class="nx-category-panel">
+
+        <h2>Yeni Kategori Oluştur</h2>
+
+        <form asp-controller="Category"
+              asp-action="Create"
+              asp-antiforgery="true"
+              method="post"
+              class="nx-category-form">
+
+            <input type="text"
+                   name="name"
+                   placeholder="Kategori adı (Örn: İş)"
+                   maxlength="50"
+                   required
+                   class="nx-category-input" />
+
+            <input type="color"
+                   name="color"
+                   value="#8b5cf6"
+                   title="Kategori rengi"
+                   class="nx-category-color" />
+
+            <button type="submit"
+                    class="nx-category-create">
+                + Kategori Oluştur
+            </button>
+
+        </form>
+    </div>
+
+    <!-- KATEGORİ LİSTESİ -->
+    <div class="nx-category-panel">
+
+        <h2>Kategorilerim</h2>
+
+        @if (Model.Count == 0)
+        {
+            <div class="nx-category-empty">
+                Henüz kategori oluşturmadın.
+                İlk kategorini yukarıdan ekleyebilirsin.
+            </div>
+        }
+        else
+        {
+            <div class="nx-category-grid">
+
+                @foreach (var item in Model)
+                {
+                    <div class="nx-category-card">
+
+                        <a asp-controller="Category"
+                           asp-action="Messages"
+                           asp-route-id="@item.Id"
+                           class="nx-category-link">
+
+                            <span class="nx-category-dot"
+                                  style="background-color: @item.Color">
+                            </span>
+
+                            <strong>@item.Name</strong>
+
+                            <small>Mesajları Gör →</small>
+
+                        </a>
+
+                        <!-- KATEGORİ SİL -->
+                        <form asp-controller="Category"
+                              asp-action="Delete"
+                              asp-route-id="@item.Id"
+                              asp-antiforgery="true"
+                              method="post"
+                              onsubmit="return confirm('Bu kategori silinsin mi? Mesajların silinmeyecek.');">
+
+                            <button type="submit"
+                                    class="nx-category-delete"
+                                    title="Kategoriyi sil"
+                                    aria-label="@item.Name kategorisini sil">
+                                🗑
+                            </button>
+
+                        </form>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<style>
+    .nx-categories-page {
+        max-width: 1200px;
+    }
+
+    .nx-category-panel {
+        padding: 24px;
+        margin-bottom: 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .nx-category-panel h2 {
+        margin: 0 0 20px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .nx-category-form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .nx-category-input {
+        flex: 1;
+        min-width: 180px;
+        padding: 13px;
+        border: 1px solid #d1d5db;
+        border-radius: 9px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+    }
+
+    .nx-category-color {
+        width: 48px;
+        height: 46px;
+        padding: 4px;
+        border: 1px solid #d1d5db;
+        border-radius: 9px;
+        cursor: pointer;
+    }
+
+    .nx-category-create {
+        padding: 13px 18px;
+        border: none;
+        border-radius: 9px;
+        background: #635bff;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .nx-category-create:hover {
+        background: #5148e8;
+    }
+
+    .nx-category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 14px;
+    }
+
+    .nx-category-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #fafbff;
+    }
+
+    .nx-category-link {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .nx-category-link strong {
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .nx-category-link small {
+        color: #8b5cf6;
+    }
+
+    .nx-category-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .nx-category-delete {
+        border: 0;
+        background: transparent;
+        padding: 8px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .nx-category-error {
+        margin-bottom: 16px;
+        padding: 12px 16px;
+        border-radius: 9px;
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .nx-category-empty {
+        padding: 32px 12px;
+        text-align: center;
+        color: #64748b;
+    }
+
+    html[data-theme="dark"] .nx-category-panel {
+        background: #171717;
+        border-color: #303030;
+    }
+
+    html[data-theme="dark"] .nx-category-card {
+        background: #202020;
+        border-color: #383838;
+    }
+
+    html[data-theme="dark"] .nx-category-input {
+        color: #f5f5f5;
+        border-color: #444444;
+    }
+
+    html[data-theme="dark"] .nx-category-link {
+        color: #f5f5f5;
+    }
+</style>

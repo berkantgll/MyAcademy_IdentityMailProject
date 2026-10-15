@@ -1,0 +1,170 @@
+﻿@using IdentityMail.Web.Entities
+@model List<UserMessage>
+
+@{
+    ViewData["Title"] = "Çöp Kutusu";
+    Layout = "_NexoraLayout";
+
+    int currentUserId = (int)ViewBag.CurrentUserId;
+}
+
+<section class="nexora-inbox nx-trash-page">
+
+    <!-- SAYFA BAŞLIĞI -->
+    <div class="inbox-heading">
+
+        <div>
+            <span class="inbox-eyebrow">
+                NEXORA MAIL / ÇÖP KUTUSU
+            </span>
+
+            <h1>Çöp Kutusu</h1>
+
+            <p>
+                Çöpe taşıdığın mesajları buradan
+                görüntüleyebilir ve geri yükleyebilirsin.
+            </p>
+        </div>
+
+        <div class="inbox-summary">
+            @Model.Count mesaj
+        </div>
+
+    </div>
+
+
+    <!-- ÇÖP KUTUSU PANELİ -->
+    <div class="inbox-panel">
+
+        <div class="inbox-panel-header">
+
+            <h2>Silinen Mesajlar</h2>
+
+            <span>@Model.Count mesaj</span>
+
+        </div>
+
+
+        @if (Model.Count == 0)
+        {
+            <!-- BOŞ ÇÖP KUTUSU -->
+            <div class="inbox-empty">
+
+                <h3>Çöp kutun boş!</h3>
+
+                <p>
+                    Çöpe taşıdığın mesajlar burada
+                    görüntülenecek.
+                </p>
+
+                <a asp-controller="Message"
+                   asp-action="Index"
+                   class="empty-compose-btn">
+
+                    ← Gelen Kutusuna Dön
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="nx-trash-list">
+
+                @foreach (var item in Model)
+                {
+                    var fromSent =
+                        item.SenderId == currentUserId &&
+                        item.IsTrashedBySender;
+
+                    var person = fromSent
+                        ? item.Receiver
+                        : item.Sender;
+
+                    var fullName =
+                        $"{person?.FirstName} {person?.LastName}".Trim();
+
+                    if (string.IsNullOrWhiteSpace(fullName))
+                    {
+                        fullName = "Bilinmeyen kullanıcı";
+                    }
+
+                    var subject = string.IsNullOrWhiteSpace(item.Subject)
+                        ? "Başlıksız Mesaj"
+                        : item.Subject;
+
+                    var preview = string.IsNullOrWhiteSpace(item.Body)
+                        ? "Mesaj içeriği bulunmuyor."
+                        : item.Body;
+
+
+                    <!-- ÇÖP KUTUSU MESAJI -->
+                    <article class="nx-trash-item">
+
+                        <div class="nx-trash-avatar">
+                            ✉
+                        </div>
+
+
+                        <!-- MESAJ BİLGİLERİ -->
+                        <div class="nx-trash-content">
+
+                            <div class="nx-trash-top">
+
+                                <strong>
+                                    @fullName
+                                </strong>
+
+                                <span class="nx-trash-type">
+                                    @(fromSent
+                                        ? "Gönderilen Mesaj"
+                                        : "Gelen Mesaj")
+                                </span>
+
+                            </div>
+
+                            <div class="nx-trash-subject">
+                                @subject
+                            </div>
+
+                            <p class="nx-trash-preview">
+                                @preview
+                            </p>
+
+                        </div>
+
+
+                        <!-- TARİH -->
+                        <time class="nx-trash-date">
+                            @item.SendDate.ToString("dd.MM.yyyy HH:mm")
+                        </time>
+
+
+                        <!-- GERİ YÜKLE -->
+                        <form asp-controller="Message"
+                              asp-action="RestoreFromTrash"
+                              asp-route-id="@item.Id"
+                              asp-antiforgery="true"
+                              method="post"
+                              class="nx-trash-restore-form">
+
+                            <button type="submit"
+                                    class="nx-trash-restore-btn">
+
+                                <span aria-hidden="true">↶</span>
+
+                                Geri Yükle
+
+                            </button>
+
+                        </form>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
