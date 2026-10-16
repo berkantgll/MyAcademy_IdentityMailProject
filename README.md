@@ -81,13 +81,13 @@ Ayrıca mesajları yıldızlama, kategorilere ayırma, çöp kutusuna taşıma v
 
 ### 🌙 Koyu Tema
 
-<img width="1919" height="1079" alt="4" src="https://github.com/user-attachments/assets/65890163-aa56-4ac9-835a-b6292fb0c9e0" />
+<img width="1919" height="1079" alt="4" src="https://github.com/user-attachments/assets/fda9c349-834d-4538-8b38-44afe51bbd1b" />
 
 <br>
 
 ### ☀️ Açık Tema
 
-<img width="1919" height="1079" alt="3" src="https://github.com/user-attachments/assets/502c3f28-dcbc-4be7-af3f-f8e47698141f" />
+<img width="1916" height="1079" alt="3" src="https://github.com/user-attachments/assets/cfced11a-a001-4972-8c58-304ba4591ea4" />
 
 ---
 
