@@ -176,3 +176,24 @@ Mesajlar en yeniden eskiye doğru sıralanarak kullanıcıya düzenli bir görü
 
 ---
 
+---
+
+## 📝 Taslak Yönetimi
+
+Nexora, kullanıcıların henüz tamamlamadığı mesajları taslak olarak kaydedebilmesine olanak sağlar.  
+Böylece kullanıcılar mesajlarını daha sonra düzenleyip gönderebilir.
+
+Taslaklar ekranında kullanıcı;
+
+- Kaydedilmiş taslak mesajları listeleyebilir
+- Taslağı tekrar açıp düzenleyebilir
+- İstemediği taslağı silebilir
+
+Taslak mesajlarda alıcı bilgisi, konu, kısa içerik özeti ve son güncelleme tarihi görüntülenmektedir.  
+Bu yapı sayesinde yarım kalan mesajlar kolayca yönetilebilir.
+
+<img width="1917" height="1079" alt="11" src="https://github.com/user-attachments/assets/773d6075-eda1-4044-86c9-7a98bf405198" />
+
+---
+
+
