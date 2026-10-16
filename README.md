@@ -196,4 +196,136 @@ Bu yapı sayesinde yarım kalan mesajlar kolayca yönetilebilir.
 
 ---
 
+---
+
+## ⭐ Yıldızlı Mesajlar
+
+Nexora, kullanıcıların önemli gördüğü mesajları yıldızlayarak ayrı bir alanda saklamasına olanak tanır.  
+Bu sayede öne çıkan mesajlara daha hızlı erişim sağlanır ve önemli içerikler kaybolmadan takip edilebilir.
+
+Yıldızlı Mesajlar ekranında kullanıcı;
+
+- Yıldız verdiği mesajları toplu şekilde görüntüleyebilir
+- Mesajın göndericisini, konusunu ve kısa içeriğini görebilir
+- Mesajın gönderim tarihini inceleyebilir
+- Önemli gördüğü mesajları diğer mesajlardan ayrı şekilde takip edebilir
+
+Bu yapı özellikle sık kullanılan, daha sonra tekrar bakılması gereken veya öncelikli mesajların yönetilmesini kolaylaştırmaktadır.
+
+### 🌙 Koyu Tema
+
+<img width="1919" height="1079" alt="13" src="https://github.com/user-attachments/assets/9ce6462c-0ded-49c2-9555-8130505eb99f" />
+
+<br>
+
+### 🌙 Açık Tema
+
+<img width="1919" height="1079" alt="12" src="https://github.com/user-attachments/assets/470d2f1b-420b-4e1b-b90a-d8c0601934e9" />
+
+---
+
+---
+
+## 🗑️ Çöp Kutusu ve Mesaj Geri Yükleme
+
+Nexora, kullanıcıların gelen ve gönderilen mesajlarını çöp kutusuna taşıyarak mesaj yönetimini daha kontrollü bir şekilde gerçekleştirmelerini sağlar.
+
+Çöp kutusuna taşınan mesajlar ana mesaj listelerinden kaldırılır ancak veritabanından doğrudan silinmez.
+
+Kullanıcılar çöp kutusu ekranında;
+
+- Çöp kutusuna taşınan mesajları görüntüleyebilir.
+- Mesajın gönderenini, konusunu ve içerik önizlemesini inceleyebilir.
+- Gelen ve gönderilen mesajları birbirinden ayırt edebilir.
+- **Geri Yükle** butonuyla mesajları ilgili kutularına geri taşıyabilir.
+
+Bu yapı sayesinde kullanıcılar yanlışlıkla çöp kutusuna taşıdıkları mesajlara yeniden erişebilir.
+
+### ☀️ Açık Tema
+
+<img width="1919" height="1079" alt="14" src="https://github.com/user-attachments/assets/5cca2ed4-c0dc-4839-a2e7-5ced0d7f4b60" />
+
+---
+
+---
+
+## 🗂️ Kategori Yönetimi
+
+Nexora, kullanıcıların mesajlarını kategorilere ayırarak daha düzenli ve kolay erişilebilir bir şekilde yönetmelerini sağlar.
+
+Kullanıcılar kendilerine özel kategoriler oluşturabilir, kategori adını ve rengini belirleyebilir. Gelen kutusundaki mesajlar istenilen kategorilere atanarak ilgili kategori altında görüntülenebilir.
+
+Kategori yönetimi kapsamında;
+
+- Yeni kategori oluşturma ve renk seçimi
+- Kullanıcıya özel kategorileri listeleme
+- Mesajları kategorilere atama
+- Kategoriye ait mesajları görüntüleme
+- Mesajları kategoriden çıkarma
+- Kategorileri silme
+
+işlemleri gerçekleştirilebilmektedir.
+
+Kategoriler kullanıcı bazlı tutulduğu için her kullanıcı kendi oluşturduğu kategorileri ve bu kategorilere ait mesajları yönetebilir.
+
+### 🌙 Kategori Oluşturma ve Renk Yönetimi
+
+<img width="1919" height="1079" alt="15" src="https://github.com/user-attachments/assets/e6128ef3-973a-4160-9ed0-a882497a54ba" />
+
+---
+
+---
+
+### 📂 Kategoriye Ait Mesajlar
+
+Nexora'da kullanıcılar oluşturdukları kategorilere mesaj atayabilir ve her kategoriye ait mesajları ayrı bir ekranda görüntüleyebilir.
+
+Kategori detay ekranında mesajların gönderen bilgisi, konusu, içerik önizlemesi ve gönderim tarihi listelenmektedir.
+
+Kullanıcılar bu ekran üzerinden;
+
+- Kategoriye ait mesajları görüntüleyebilir.
+- Gelen ve gönderilen mesajları ayırt edebilir.
+- Mesajların detaylarına ulaşabilir.
+- Mesajları kategoriden çıkarabilir.
+
+Bir mesaj kategoriden çıkarıldığında mesajın kendisi silinmez, yalnızca ilgili kategoriyle olan bağlantısı kaldırılır.
+
+### 🌙 Koyu Tema
+
+<img width="1919" height="1079" alt="17" src="https://github.com/user-attachments/assets/7897d6a1-45d8-4e93-872f-a6d20406d875" />
+
+
+<br>
+
+### ☀️ Açık Tema
+
+<img width="1919" height="1079" alt="16" src="https://github.com/user-attachments/assets/979b85ef-0c62-4fe4-a2a8-ee111210c42c" />
+
+---
+
+---
+
+## 👤 Kullanıcı Profili ve Hesap Güvenliği
+
+Nexora, kullanıcıların kişisel bilgilerini görüntüleyebildiği ve hesap ayarlarını yönetebildiği bir profil alanına sahiptir.
+
+ASP.NET Core Identity altyapısı kullanılarak geliştirilen bu bölümde, kullanıcılar yalnızca kendi hesap bilgilerine erişebilir ve güncelleme işlemlerini gerçekleştirebilir.
+
+Profil yönetimi kapsamında;
+
+- Ad, soyad, kullanıcı adı ve e-posta bilgilerini görüntüleme
+- Ad ve soyad bilgilerini güncelleme
+- Mevcut şifreyi doğrulayarak yeni şifre belirleme
+- Şifre doğrulama ve güvenli parola güncelleme
+
+işlemleri gerçekleştirilebilmektedir.
+
+Şifre değiştirme işlemleri ASP.NET Core Identity'nin `UserManager` yapısı üzerinden gerçekleştirilerek kullanıcı şifreleri güvenli şekilde yönetilmektedir.
+
+### ☀️ Kullanıcı Profil Ekranı
+
+<img width="1919" height="1079" alt="18" src="https://github.com/user-attachments/assets/a195cb68-b61c-48c0-a915-180a10e45060" />
+
+---
 
