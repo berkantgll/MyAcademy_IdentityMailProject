@@ -90,7 +90,6 @@ Ayrıca mesajları yıldızlama, kategorilere ayırma, çöp kutusuna taşıma v
 <img width="1916" height="1079" alt="3" src="https://github.com/user-attachments/assets/cfced11a-a001-4972-8c58-304ba4591ea4" />
 
 ---
-<img width="1919" height="1079" alt="8" src="https://github.com/user-attachments/assets/32cd0a7b-6a4d-47bb-a50a-722b5723cb2b" />
 
 ---
 
@@ -104,9 +103,13 @@ Ayrıca kullanıcı bu ekran üzerinden ilgili mesaja doğrudan cevap verebilir 
 
 Mesaj okundu durumunda sistem tarafından okunma bilgisi de kullanıcıya gösterilmektedir.
 
+### 🌙 Koyu Tema
+
 <img width="1919" height="1079" alt="6" src="https://github.com/user-attachments/assets/e8d79a79-b083-4e1c-a1fc-de7d8393e9ed" />
 
 <br>
+
+### ☀️ Açık Tema
 
 <img width="1919" height="1079" alt="5" src="https://github.com/user-attachments/assets/25b4f20a-a645-4a3f-9092-2affacfff312" />
 
