@@ -91,4 +91,16 @@ Ayrıca mesajları yıldızlama, kategorilere ayırma, çöp kutusuna taşıma v
 
 ---
 
+---
 
+## 🔎 Gelişmiş Arama ve Filtreleme
+
+Nexora, kullanıcıların mesajlarına hızlı ve kolay şekilde ulaşabilmesi için gelişmiş arama, filtreleme ve sıralama özellikleri sunmaktadır.
+
+Kullanıcılar gelen kutularındaki mesajları gönderen adı veya mesaj konusuna göre arayabilir. Okunma durumu, kategori ve tarih aralığına göre filtreleme yapabilir, yalnızca yıldızlı mesajları listeleyebilir ve mesajları gönderim tarihine göre sıralayabilir.
+
+Birden fazla filtre aynı anda uygulanabilir. Ayrıca sayfalama desteği sayesinde çok sayıda mesaj düzenli şekilde görüntülenebilir.
+
+<img width="1919" height="1079" alt="5" src="https://github.com/user-attachments/assets/9be97d85-9cba-4937-97f0-632601ffbce0" />
+
+---
