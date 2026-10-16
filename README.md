@@ -46,3 +46,27 @@ Kullanıcılar platform üzerinden kayıt olabilir, giriş yapabilir, gelen kutu
 Yönetim tarafında ise admin paneli üzerinden kullanıcılar görüntülenebilir, roller yönetilebilir, hesap durumları güncellenebilir ve kullanıcılar tarafından oluşturulan mesaj şikâyetleri takip edilebilir. Böylece hem kullanıcı paneli hem de yönetim paneli tek proje içinde bir araya getirilmiştir.
 
 ---
+
+---
+
+## 🔐 Giriş ve Kayıt Ekranları
+
+Nexora, ASP.NET Core Identity altyapısı ile kullanıcı kayıt ve giriş işlemlerini yönetmektedir. Kullanıcılar kendilerine ait hesaplar oluşturarak mesajlaşma platformuna güvenli bir şekilde erişebilir.
+
+### 🔑 Kullanıcı Girişi
+
+Kayıtlı kullanıcılar e-posta adresleri ve şifreleri ile sisteme giriş yapabilir. Rol tabanlı yetkilendirme sayesinde kullanıcılar kendi mesajlaşma paneline, yöneticiler ise Admin Dashboard ekranına yönlendirilir.
+
+<img width="1919" height="1079" alt="Ekran görüntüsü 2026-10-16 214628" src="https://github.com/user-attachments/assets/6ae32446-29b8-457e-8696-990f811a8a01" />
+
+<br>
+
+### 📝 Kullanıcı Kaydı
+
+Yeni kullanıcılar ad, soyad, kullanıcı adı, e-posta adresi ve şifre bilgileriyle hesap oluşturabilir. ASP.NET Core Identity sayesinde şifre güvenliği, kullanıcı doğrulamaları ve benzersiz e-posta kontrolü sağlanmaktadır.
+
+<img width="1919" height="1079" alt="Ekran görüntüsü 2026-10-16 214635" src="https://github.com/user-attachments/assets/8fa60245-982c-4572-aedf-d6bb3260b747" />
+
+---
+
+
