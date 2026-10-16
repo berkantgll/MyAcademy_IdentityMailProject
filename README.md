@@ -329,3 +329,158 @@ işlemleri gerçekleştirilebilmektedir.
 
 ---
 
+---
+
+## 📊 Admin Paneli ve Dashboard
+
+Nexora, rol tabanlı yetkilendirme sistemi sayesinde yöneticilere özel bir Admin Paneli sunmaktadır.
+
+ASP.NET Core Identity kullanılarak geliştirilen yönetim paneline yalnızca **Admin** rolüne sahip kullanıcılar erişebilmektedir.
+
+Dashboard ekranında sistemin genel durumu ve mesajlaşma aktiviteleri veritabanından alınan güncel bilgilerle takip edilebilmektedir.
+
+### 📈 Dashboard İstatistikleri
+
+Yönetim paneli üzerinden;
+
+- Toplam kayıtlı kullanıcı sayısı
+- Aktif kullanıcı sayısı
+- Sistemdeki toplam mesaj sayısı
+- Gün içerisinde gönderilen mesaj sayısı
+- Okunmamış mesaj sayısı
+- Çöp kutusundaki mesaj sayısı
+- En çok mesaj gönderen 5 kullanıcı
+- Mesajlarda en çok kullanılan 5 kategori
+
+görüntülenebilmektedir.
+
+Bu istatistikler **Entity Framework Core** ve **LINQ sorguları** kullanılarak SQL Server veritabanından elde edilmektedir.
+
+Dashboard sayesinde yöneticiler sistemdeki kullanıcı ve mesaj hareketliliğini tek bir ekran üzerinden takip edebilmektedir.
+
+### 🌙 Admin Dashboard
+
+<img width="1919" height="1079" alt="19" src="https://github.com/user-attachments/assets/cfc4c272-b0c8-42ab-beb4-fd37247b955f" />
+
+---
+
+---
+
+## 👥 Admin Kullanıcı ve Rol Yönetimi
+
+Nexora, yöneticilerin sistemde kayıtlı kullanıcıları görüntüleyebildiği ve hesaplarını yönetebildiği rol tabanlı bir kullanıcı yönetim sistemine sahiptir.
+
+ASP.NET Core Identity altyapısı kullanılarak geliştirilen bu bölümde, yalnızca **Admin** rolüne sahip kullanıcılar yönetim işlemlerini gerçekleştirebilmektedir.
+
+Kullanıcı yönetimi kapsamında;
+
+- Sisteme kayıtlı kullanıcıları listeleme
+- Kullanıcıların ad, soyad, e-posta ve kullanıcı adı bilgilerini görüntüleme
+- Kullanıcı detaylarını ve mesaj istatistiklerini inceleme
+- Kullanıcılara Admin veya User rolü atama
+- Kullanıcı hesaplarını aktif veya pasif duruma getirme
+- Yöneticinin kendi hesabını pasifleştirmesini ve rolünü değiştirmesini engelleme
+
+işlemleri gerçekleştirilebilmektedir.
+
+Hesabı pasifleştirilen kullanıcıların sisteme erişimi ASP.NET Core Identity üzerinden kısıtlanmaktadır. Rol tabanlı yetkilendirme sayesinde standart kullanıcılar yönetim panelindeki işlemlere erişememektedir.
+
+### 🌙 Kullanıcı Yönetimi Ekranı
+
+<img width="1919" height="1079" alt="20" src="https://github.com/user-attachments/assets/6509aa2d-0f8c-4e00-a36e-19e2f7167365" />
+
+---
+
+---
+
+## 🚩 Mesaj Şikâyet Sistemi ve Admin Şikâyet Yönetimi
+
+Nexora, kullanıcıların rahatsız edici, uygunsuz veya spam içerikli mesajları yöneticilere bildirebildiği bir şikâyet yönetim sistemine sahiptir.
+
+Kullanıcılar gelen kutusundaki mesajların işlem menüsü üzerinden şikâyet nedenini seçerek bildirim oluşturabilir. Oluşturulan şikâyetler Admin Paneli'nde listelenir ve yöneticiler tarafından incelenebilir.
+
+### 📩 Kullanıcı Tarafında Mesaj Şikâyeti
+
+Kullanıcılar mesajların üç nokta menüsünden **Mesajı Şikâyet Et** alanına ulaşarak şikâyet nedeni seçebilir ve bildirim gönderebilir.
+
+Aynı kullanıcı, aynı mesaj için birden fazla şikâyet oluşturamaz.
+
+<img width="1919" height="1079" alt="21" src="https://github.com/user-attachments/assets/c4b3b6a0-f8c9-4ab4-82dd-c132c15ff21b" />
+
+<br>
+
+### 🚩 Admin Şikâyet Listesi
+
+Yönetici panelinde kullanıcılar tarafından oluşturulan şikâyetler tek bir ekranda listelenmektedir.
+
+Bu bölümde;
+
+- Toplam şikâyet sayısı
+- İncelenmeyi bekleyen şikâyetler
+- İncelenen şikâyetler
+- Şikâyet nedeni ve tarihi
+- Şikâyet edilen mesaj ve kullanıcı bilgileri
+- Şikâyetin inceleme durumu
+
+takip edilebilmektedir.
+
+<img width="1919" height="1079" alt="22" src="https://github.com/user-attachments/assets/a26ff2b5-9aac-4e66-a46c-349aefe09de4" />
+
+
+<br>
+
+### 🔍 Şikâyet Detayı ve İnceleme
+
+Yöneticiler, şikâyet detay ekranından bildirilen mesajın gönderenini, alıcısını, konusunu, içeriğini ve şikâyet nedenini inceleyebilir.
+
+İnceleme tamamlandığında **İncelendi Olarak İşaretle** işlemiyle şikâyetin durumu güncellenir.
+
+Bu yapı sayesinde kullanıcı bildirimleri düzenli şekilde takip edilerek yönetici kontrolünden geçirilebilir.
+
+<img width="1919" height="1079" alt="23" src="https://github.com/user-attachments/assets/f67463ad-8363-4357-be74-954afb4dbc3c" />
+
+---
+
+---
+
+## 🛠️ Kullanılan Teknolojiler
+
+| Teknoloji | Kullanım Amacı |
+|---|---|
+| ASP.NET Core MVC | Web uygulaması ve MVC mimarisi |
+| C# | Backend geliştirme |
+| Microsoft SQL Server | İlişkisel veritabanı |
+| Entity Framework Core | Veritabanı işlemleri ve ORM |
+| ASP.NET Core Identity | Kimlik doğrulama ve kullanıcı yönetimi |
+| Role-Based Authorization | Admin ve User rol yetkilendirmesi |
+| Cookie Authentication | Kullanıcı oturum yönetimi |
+| LINQ | Veri sorgulama, filtreleme ve istatistikler |
+| Razor Views | Dinamik kullanıcı arayüzleri |
+| Data Annotations | Form ve model doğrulama |
+| Bootstrap | Arayüz bileşenleri |
+| HTML, CSS & JavaScript | Tasarım, tema ve kullanıcı etkileşimleri |
+
+---
+
+---
+
+## 👨‍💻 Geliştirici
+
+**Berkant Gülel**  
+Yazılım Mühendisi
+
+[![GitHub](https://img.shields.io/badge/GitHub-berkantgll-181717?style=for-the-badge&logo=github)](https://github.com/berkantgll)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Berkant_Gülel-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/berkant-gülel-06783b286/)
+
+---
+
+<div align="center">
+
+<h3>💜 Nexora</h3>
+
+<p><strong>Smart Communication, Seamless Management.</strong></p>
+
+<p>Developed by Berkant Gülel © 2026</p>
+
+</div>
