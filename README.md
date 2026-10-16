@@ -104,3 +104,20 @@ Birden fazla filtre aynı anda uygulanabilir. Ayrıca sayfalama desteği sayesin
 <img width="1919" height="1079" alt="5" src="https://github.com/user-attachments/assets/9be97d85-9cba-4937-97f0-632601ffbce0" />
 
 ---
+
+---
+
+## 📤 Gönderilen Mesajlar
+
+Nexora, kullanıcıların gönderdikleri mesajları tek bir ekran üzerinden görüntüleyebilmelerini ve takip edebilmelerini sağlar.
+
+Gönderilenler bölümünde alıcının adı, e-posta adresi, mesaj konusu, içerik önizlemesi ve gönderim tarihi listelenmektedir.
+
+Kullanıcılar gönderdikleri mesajların detaylarını inceleyebilir, alıcı tarafından okunup okunmadığını takip edebilir ve ihtiyaç duyduklarında mesajları çöp kutusuna taşıyabilir.
+
+Mesajlar en yeniden eskiye doğru sıralanarak kullanıcıya düzenli bir görünüm sunulur.
+
+<img width="1919" height="1079" alt="6" src="https://github.com/user-attachments/assets/e427dfd8-ad2b-4267-9691-6da8168348f7" />
+
+---
+
