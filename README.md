@@ -90,6 +90,58 @@ Ayrıca mesajları yıldızlama, kategorilere ayırma, çöp kutusuna taşıma v
 <img width="1916" height="1079" alt="3" src="https://github.com/user-attachments/assets/cfced11a-a001-4972-8c58-304ba4591ea4" />
 
 ---
+<img width="1919" height="1079" alt="8" src="https://github.com/user-attachments/assets/32cd0a7b-6a4d-47bb-a50a-722b5723cb2b" />
+
+---
+
+## 📩 Gelen Mesaj Detayı
+
+Nexora’da kullanıcılar gelen kutusunda yer alan herhangi bir mesaja tıklayarak mesajın detay sayfasına ulaşabilmektedir.
+
+Bu detay ekranında gönderen kullanıcı bilgileri, gönderim tarihi, mesajın konusu ve tam içerik yapısı sade ve okunabilir bir arayüz ile sunulmaktadır.
+
+Ayrıca kullanıcı bu ekran üzerinden ilgili mesaja doğrudan cevap verebilir ve tekrar gelen kutusuna dönebilir.
+
+Mesaj okundu durumunda sistem tarafından okunma bilgisi de kullanıcıya gösterilmektedir.
+
+<img width="1919" height="1079" alt="6" src="https://github.com/user-attachments/assets/e8d79a79-b083-4e1c-a1fc-de7d8393e9ed" />
+
+<br>
+
+<img width="1919" height="1079" alt="5" src="https://github.com/user-attachments/assets/25b4f20a-a645-4a3f-9092-2affacfff312" />
+
+---
+
+---
+
+## ✉️ Yeni Mesaj Oluşturma ve Yanıtlama
+
+Nexora, kullanıcıların sistemde kayıtlı diğer kullanıcılara mesaj gönderebilmesini sağlayan sade ve modern bir mesaj oluşturma arayüzüne sahiptir.
+
+Kullanıcılar alıcının e-posta adresini, mesaj konusunu ve içeriğini belirleyerek yeni mesaj oluşturabilir. Mesaj gönderimi sırasında alıcının sistemde kayıtlı olup olmadığı kontrol edilir.
+
+Mesaj oluşturma ekranında;
+
+- Kayıtlı kullanıcılara mesaj gönderme
+- Alıcı, konu ve mesaj içeriği belirleme
+- Mesajı göndermeden taslak olarak kaydetme
+- Gelen mesajları doğrudan yanıtlama
+
+işlemleri gerçekleştirilebilmektedir.
+
+Yanıtlama işleminde alıcının e-posta adresi otomatik olarak doldurulur ve mesaj konusuna **Re:** ifadesi eklenir. Böylece kullanıcı mevcut mesaja kolayca cevap verebilir.
+
+### ☀️ Açık Tema
+
+<img width="1919" height="1079" alt="8" src="https://github.com/user-attachments/assets/6563f6f4-9ea6-437e-9f1f-30459c8461c8" />
+
+<br>
+
+### 🌙 Koyu Tema
+
+<img width="1919" height="1079" alt="7" src="https://github.com/user-attachments/assets/b9deaa73-8a94-4f85-95b2-f2024029e939" />
+
+---
 
 ---
 
