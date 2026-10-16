@@ -34,3 +34,15 @@ yönetici paneli ile kullanıcı ve mesaj yönetimini bir araya getirir.
 <br>
 
 ---
+
+---
+
+## ✨ Proje Hakkında
+
+Nexora, ASP.NET Core MVC ve ASP.NET Core Identity kullanılarak geliştirilen modern bir mesajlaşma ve kullanıcı yönetim platformudur.
+
+Kullanıcılar platform üzerinden kayıt olabilir, giriş yapabilir, gelen kutularını yönetebilir, mesaj gönderebilir, taslak oluşturabilir, mesajlarını yıldızlayabilir, çöp kutusuna taşıyabilir ve kategorilere ayırabilir. Ayrıca profil bilgilerini güncelleyebilir ve şifre işlemlerini güvenli şekilde gerçekleştirebilir.
+
+Yönetim tarafında ise admin paneli üzerinden kullanıcılar görüntülenebilir, roller yönetilebilir, hesap durumları güncellenebilir ve kullanıcılar tarafından oluşturulan mesaj şikâyetleri takip edilebilir. Böylece hem kullanıcı paneli hem de yönetim paneli tek proje içinde bir araya getirilmiştir.
+
+---
