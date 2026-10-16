@@ -69,4 +69,26 @@ Yeni kullanıcılar ad, soyad, kullanıcı adı, e-posta adresi ve şifre bilgil
 
 ---
 
+---
+
+## 📥 Gelen Kutusu ve Mesaj Yönetimi
+
+Nexora'nın gelen kutusu, kullanıcıların kendilerine gönderilen mesajları tek bir ekran üzerinden görüntüleyip yönetebildiği modern bir arayüze sahiptir.
+
+Kullanıcılar; gönderen adı ve mesaj konusuna göre arama yapabilir, okundu/okunmadı durumuna, kategoriye ve tarih aralığına göre filtreleme uygulayabilir. Mesajlar tarihe göre sıralanabilir ve sayfalama ile listelenebilir.
+
+Ayrıca mesajları yıldızlama, kategorilere ayırma, çöp kutusuna taşıma ve yanıtlama işlemleri gerçekleştirilebilir. Sidebar üzerinde okunmamış mesaj sayısı görüntülenir.
+
+### 🌙 Koyu Tema
+
+<img width="1919" height="1079" alt="4" src="https://github.com/user-attachments/assets/65890163-aa56-4ac9-835a-b6292fb0c9e0" />
+
+<br>
+
+### ☀️ Açık Tema
+
+<img width="1919" height="1079" alt="3" src="https://github.com/user-attachments/assets/502c3f28-dcbc-4be7-af3f-f8e47698141f" />
+
+---
+
 
